@@ -1,0 +1,173 @@
+{% extends 'social/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="fixed inset-0 top-[60px] z-0 flex justify-center lg:bg-black/20 backdrop-blur-sm">
+    
+    <div class="relative w-full max-w-[480px] h-[calc(100vh-60px)] lg:h-[calc(100vh-80px)] lg:mt-4 lg:rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 bg-black">
+        
+        <div class="w-full h-full overflow-y-scroll outline-none snap-y snap-mandatory scrollbar-hide" id="reels-container" tabindex="0">
+            
+            {% for post in reels|default:"123" %} 
+            <div class="relative flex items-center justify-center w-full h-full snap-start bg-zinc-900 reel-item">
+                
+                {% if post.video %}
+                    <video src="{{ post.video.url }}" class="object-cover w-full h-full" loop playsinline onclick="togglePlay(this)"></video>
+                {% else %}
+                    <video src="https://assets.mixkit.co/videos/preview/mixkit-abstract-video-of-a-man-with-neon-lights-1239-large.mp4" 
+                           class="object-cover w-full h-full" 
+                           loop playsinline onclick="togglePlay(this)"></video>
+                {% endif %}
+
+                <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/30 via-transparent to-black/90"></div>
+
+                <div class="absolute top-0 left-0 z-20 flex items-start justify-between w-full p-6 pointer-events-none">
+                    <span class="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-bold tracking-widest text-white uppercase border border-white/20">
+                        Reels
+                    </span>
+                    <button class="flex items-center justify-center w-10 h-10 text-white transition border rounded-full pointer-events-auto bg-black/20 backdrop-blur-xl border-white/10 hover:bg-white/20">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+
+                <div class="absolute z-30 flex flex-col gap-4 bottom-24 right-4">
+                    <div class="flex flex-col gap-1 p-2 border rounded-full shadow-lg bg-black/20 backdrop-blur-xl border-white/10">
+                        
+                        <div class="flex flex-col items-center gap-1 py-2 cursor-pointer group">
+                            <button class="flex items-center justify-center w-10 h-10 transition rounded-full hover:bg-white/10 active:scale-90">
+                                <i class="text-2xl text-white transition fas fa-heart group-hover:text-rose-500"></i>
+                            </button>
+                            <span class="text-white text-[10px] font-bold">12.5k</span>
+                        </div>
+
+                        <div class="flex flex-col items-center gap-1 py-2 cursor-pointer group">
+                            <button class="flex items-center justify-center w-10 h-10 transition rounded-full hover:bg-white/10 active:scale-90">
+                                <i class="text-2xl text-white transition fas fa-comment-dots group-hover:text-violet-400"></i>
+                            </button>
+                            <span class="text-white text-[10px] font-bold">428</span>
+                        </div>
+
+                        <div class="relative flex flex-col items-center gap-1 py-2 cursor-pointer group">
+                            <div class="absolute inset-0 rounded-full bg-violet-500/20 blur-lg animate-pulse"></div>
+                            <button class="flex items-center justify-center w-10 h-10 transition transform border rounded-full shadow-lg bg-gradient-to-tr from-violet-600 to-cyan-500 group-hover:scale-110 active:scale-95 border-white/20">
+                                <i class="fas fa-paper-plane text-lg text-white -ml-0.5 mt-0.5"></i>
+                            </button>
+                            <span class="text-cyan-300 text-[10px] font-bold">Enviar</span>
+                        </div>
+
+                        <div class="flex flex-col items-center gap-1 py-2 cursor-pointer group">
+                            <button class="flex items-center justify-center w-10 h-10 transition rounded-full hover:bg-white/10">
+                                <i class="text-lg fas fa-ellipsis-v text-white/80"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="w-12 h-12 p-1 mx-auto mt-2 border-2 rounded-full shadow-lg cursor-pointer border-white/20 bg-black/50 backdrop-blur-md animate-spin-slow">
+                        <img src="https://ui-avatars.com/api/?name=Music&background=random" class="object-cover w-full h-full rounded-full">
+                    </div>
+                </div>
+
+                <div class="absolute bottom-0 left-0 z-20 flex flex-col w-full gap-3 p-6 pb-8 pointer-events-none">
+                    <div class="flex items-center gap-3 pointer-events-auto w-fit">
+                        <div class="flex items-center gap-2 py-1 pl-1 pr-4 transition border rounded-full cursor-pointer bg-black/30 backdrop-blur-md border-white/10 hover:bg-white/10">
+                            <div class="w-8 h-8 overflow-hidden border rounded-full border-white/30">
+                                <img src="{% if post.autor.avatar %}{{ post.autor.avatar.url }}{% else %}https://ui-avatars.com/api/?name=User&background=random{% endif %}" class="object-cover w-full h-full">
+                            </div>
+                            <span class="text-sm font-bold tracking-wide text-white shadow-black drop-shadow-md">
+                                {{ post.autor.username|default:"@nio_cortex" }}
+                            </span>
+                            <span class="w-1 h-1 mx-1 rounded-full bg-white/50"></span>
+                            <span class="text-xs font-bold transition text-violet-300 hover:text-violet-200">Seguir</span>
+                        </div>
+                    </div>
+
+                    <div class="text-white/90 text-sm font-light leading-relaxed max-w-[80%] drop-shadow-md pointer-events-auto">
+                        <p class="line-clamp-2">
+                            {{ post.texto|default:"Explorando novas dimensões com a IA do YourLife. O futuro é agora! 🚀✨ #NioCortex #Tech #Future" }}
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-white/80 text-xs font-medium bg-black/20 backdrop-blur-sm w-fit px-3 py-1.5 rounded-lg border border-white/5">
+                        <i class="fas fa-music text-violet-400"></i>
+                        <span class="tracking-wide">Som Original - NioCortex Labs</span>
+                    </div>
+
+                    <div class="w-full h-1 mt-2 overflow-hidden rounded-full bg-white/20">
+                        <div class="h-full bg-gradient-to-r from-violet-500 to-cyan-400 w-[45%] shadow-[0_0_10px_rgba(124,58,237,0.5)]"></div>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <div class="fixed z-10 flex-col hidden gap-4 -translate-y-1/2 lg:flex right-10 top-1/2">
+        <button onclick="scrollReel(-1)" class="flex items-center justify-center w-12 h-12 text-white transition border rounded-full shadow-lg bg-white/5 backdrop-blur-lg border-white/10 hover:bg-white/20 hover:scale-110 group">
+            <i class="transition fas fa-arrow-up group-hover:-translate-y-1"></i>
+        </button>
+        <button onclick="scrollReel(1)" class="flex items-center justify-center w-12 h-12 text-white transition border rounded-full shadow-lg bg-white/5 backdrop-blur-lg border-white/10 hover:bg-white/20 hover:scale-110 group">
+            <i class="transition fas fa-arrow-down group-hover:translate-y-1"></i>
+        </button>
+    </div>
+
+</div>
+
+<script>
+    function togglePlay(video) {
+        if (video.paused) { video.play(); } else { video.pause(); }
+    }
+    
+    // Função principal de scroll
+    function scrollReel(direction) {
+        const container = document.getElementById('reels-container');
+        const height = container.clientHeight;
+        container.scrollBy({ top: height * direction, behavior: 'smooth' });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('reels-container');
+        const videos = document.querySelectorAll('video');
+        
+        // 1. Observer para Auto-Play/Pause
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.play().catch(() => {});
+                    entry.target.currentTime = 0;
+                } else {
+                    entry.target.pause();
+                }
+            });
+        }, { threshold: 0.6 });
+        
+        videos.forEach(video => observer.observe(video));
+
+        // 2. CONTROLE DA RODINHA DO MOUSE (WHEEL)
+        let isScrolling = false; // Debounce para evitar pular vários vídeos
+
+        container.addEventListener('wheel', (e) => {
+            e.preventDefault(); // Impede o scroll nativo rápido
+
+            if (isScrolling) return;
+
+            const direction = e.deltaY > 0 ? 1 : -1;
+            
+            // Ativa o scroll programático
+            isScrolling = true;
+            scrollReel(direction);
+
+            // Reseta o bloqueio após a animação (ajuste o tempo conforme necessário)
+            setTimeout(() => {
+                isScrolling = false;
+            }, 800); // 800ms é um bom tempo para a transição suave terminar
+        }, { passive: false }); // passive: false é necessário para usar preventDefault
+    });
+</script>
+
+<style>
+    .animate-spin-slow { animation: spin 4s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+</style>
+{% endblock %}

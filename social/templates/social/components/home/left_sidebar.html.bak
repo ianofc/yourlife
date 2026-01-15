@@ -1,0 +1,74 @@
+
+<aside class="sticky hidden space-y-6 lg:block lg:col-span-3 top-24">
+    <div class="glass-panel rounded-[2.5rem] p-6 text-center border border-white/40 shadow-xl relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 blur-xl"></div>
+        <div class="relative z-10 mt-4">
+            <div class="w-24 h-24 p-1 mx-auto border rounded-full shadow-lg border-white/50 bg-white/20 backdrop-blur-md">
+                <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ user.first_name }}&background=random&color=fff{% endif %}" class="object-cover w-full h-full rounded-full">
+            </div>
+            <h2 class="mt-4 text-lg font-bold text-slate-800 font-display">{{ user.get_full_name }}</h2>
+            <p class="mb-6 text-xs font-bold tracking-widest uppercase text-slate-500">@{{ user.username }}</p>
+            <div class="grid grid-cols-3 gap-2 py-4 mb-4 border-y border-white/30 bg-white/5 rounded-2xl">
+                <div><span class="block font-bold text-slate-800">12</span><span class="text-[9px] uppercase text-slate-500">Posts</span></div>
+                <div><span class="block font-bold text-slate-800">84</span><span class="text-[9px] uppercase text-slate-500">Amigos</span></div>
+                <div><span class="block font-bold text-slate-800">5</span><span class="text-[9px] uppercase text-slate-500">Nível</span></div>
+            </div>
+            <a href="{% url 'yourlife_social:meu_perfil' %}" class="block w-full py-3 bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-violet-600 transition shadow-lg transform hover:-translate-y-0.5">
+                Ver Perfil
+            </a>
+        </div>
+    </div>
+     <nav class="space-y-6">
+        <div>
+            <h3 class="px-4 mb-2 text-[10px] font-black uppercase text-slate-400 tracking-widest">Principal</h3>
+            <div class="glass-panel rounded-[2rem] p-2 space-y-1">
+                <a href="{% url 'yourlife_social:home' %}" class="flex items-center gap-3 px-4 py-3 transition rounded-xl hover:bg-violet-500/10 text-slate-600 hover:text-violet-600">
+                    <i class="fas fa-house"></i> <span class="text-xs font-bold">Feed</span>
+                </a>
+                {% if 'PROFESSOR' in user.role %}
+                    <a href="{% url 'yourlife_social:groups_list' %}" class="flex items-center gap-3 px-4 py-3 transition rounded-xl hover:bg-black/5 text-slate-600"><i class="fas fa-users"></i> <span class="text-xs font-bold">Grupos</span></a>
+                    <a href="{% url 'yourlife_social:events_list' %}" class="flex items-center gap-3 px-4 py-3 transition rounded-xl hover:bg-black/5 text-slate-600"><i class="fas fa-calendar-star"></i> <span class="text-xs font-bold">Eventos</span></a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div>
+        <h3 class="px-4 mb-2 text-[10px] font-black uppercase text-slate-400 tracking-widest">Social</h3>
+        <div class="glass-panel p-4 rounded-[2rem] border border-white/30 space-y-2">
+        <a href="{% url 'yourlife_social:groups_list' %}" class="flex items-center gap-3 px-4 py-3 text-sm font-bold transition text-slate-600 hover:bg-white/40 hover:text-violet-600 rounded-xl"><i class="w-5 fas fa-users"></i> Comunidades</a>
+        <a href="{% url 'yourlife_social:events_list' %}" class="flex items-center gap-3 px-4 py-3 text-sm font-bold transition text-slate-600 hover:bg-white/40 hover:text-violet-600 rounded-xl"><i class="w-5 fas fa-calendar-alt"></i> Eventos</a>
+    </div>
+            <h3 class="px-4 mb-2 text-[10px] font-black uppercase text-slate-400 tracking-widest">Ferramentas</h3>
+            <div class="glass-panel rounded-[2rem] p-2 space-y-1">
+                {% if 'PROFESSOR' in user.role %}
+                    <a href="{% url 'lumenios:dashboard_professor' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-brain"></i> <span class="text-xs font-bold">Lumenio</span></a>
+                    <a href="{% url 'pedagogico:listar_turmas' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-chalkboard-user"></i> <span class="text-xs font-bold">Turmas</span></a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-map"></i> <span class="text-xs font-bold">Planejamento</span></a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-tasks"></i> <span class="text-xs font-bold">Atividades</span></a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-star"></i> <span class="text-xs font-bold">Avaliações</span></a>
+                {% elif 'ALUNO' in user.role %}
+                    {% if user.nivel_ensino == 'bebe' %}
+                        <a href="{% url 'core:daily_diary' %}" class="flex items-center gap-3 px-4 py-3 text-pink-600 rounded-xl bg-pink-50"><i class="fas fa-baby"></i> <span class="text-xs font-bold">Diário Infantil</span></a>
+                    {% else %}
+                        <a href="{% url 'lumenios:dashboard_aluno' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-graduation-cap"></i> <span class="text-xs font-bold">Lumenios</span></a>
+                        <a href="{% url 'core:student_subjects' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-book"></i> <span class="text-xs font-bold">Disciplinas</span></a>
+                        <a href="{% url 'core:student_calendar' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-calendar-days"></i> <span class="text-xs font-bold">Agenda Escolar</span></a>
+                        <a href="{% url 'core:student_grades' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-file-invoice"></i> <span class="text-xs font-bold">Boletim e Notas</span></a>
+                        <a href="{% url 'core:student_files' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-folder-open"></i> <span class="text-xs font-bold">Arquivos e Materiais</span></a>
+                        <a href="{% url 'core:student_library' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-book-reader"></i> <span class="text-xs font-bold">Biblioteca</span></a>
+                        <a href="{% url 'core:gamification_store' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-shopping-bag"></i> <span class="text-xs font-bold">NioStore</span></a>
+                        {% if user.nivel_ensino == 'superior' %}
+                            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-briefcase"></i> <span class="text-xs font-bold">Vagas e Estágios</span></a>
+                            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-black/5"><i class="fas fa-user-graduate"></i> <span class="text-xs font-bold">Orientação TCC</span></a>
+                        {% endif %}
+                        {% if user.tenant_type == 'PRIVATE' %}
+                            <a href="{% url 'core:student_financial' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-emerald-600 bg-emerald-50"><i class="fas fa-wallet"></i> <span class="text-xs font-bold">Financeiro</span></a>
+                        {% endif %}
+                    {% endif %}
+                    <a href="{% url 'core:student_services' %}" class="flex items-center gap-3 px-4 py-3 border-t rounded-xl text-slate-600 hover:bg-black/5 border-slate-100"><i class="fas fa-file-signature"></i> <span class="text-xs font-bold">Requerimentos</span></a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+</aside>

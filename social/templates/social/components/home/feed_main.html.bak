@@ -1,0 +1,165 @@
+
+<main class="col-span-1 space-y-8 lg:col-span-6">
+    <div class="relative group/stories" x-data="storiesScroll()">
+        <button 
+            @click="scrollLeft" 
+            x-show="canScrollLeft"
+            class="absolute z-20 flex items-center justify-center w-10 h-10 transition-all -translate-y-1/2 rounded-full shadow-lg opacity-0 left-2 top-1/2 bg-white/80 backdrop-blur-sm text-slate-700 hover:bg-white group-hover/stories:opacity-100 disabled:opacity-0"
+            style="display: none;" 
+            x-show.important="canScrollLeft"
+        >
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="flex gap-3 py-2 overflow-x-auto no-scrollbar scroll-smooth" x-ref="storiesContainer" @scroll="checkScroll">
+            
+            <div class="relative flex-shrink-0 h-48 overflow-hidden transition-transform border shadow-md cursor-pointer w-28 rounded-2xl group hover:-translate-y-1 hover:shadow-xl border-white/40">
+                <div class="relative w-full h-3/4">
+                    <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ user.first_name }}{% endif %}" 
+                         class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 filter brightness-90">
+                </div>
+                <div class="relative z-10 flex flex-col items-center justify-end w-full pb-3 bg-white h-1/4">
+                    <span class="text-[11px] font-bold text-slate-800">Criar story</span>
+                </div>
+                <div class="absolute z-20 flex items-center justify-center w-8 h-8 -translate-x-1/2 border-4 border-white rounded-full shadow-sm bottom-9 left-1/2 bg-violet-600">
+                    <i class="text-xs text-white fas fa-plus"></i>
+                </div>
+                <a href="{% url 'yourlife_social:create_story' %}" class="absolute inset-0 z-30"></a>
+            </div>
+
+            {% for i in "12345" %}
+            <div class="relative flex-shrink-0 h-48 overflow-hidden transition-transform border shadow-md cursor-pointer w-28 rounded-2xl group hover:-translate-y-1 hover:shadow-xl bg-slate-200 border-white/40">
+                <img src="https://picsum.photos/200/350?random={{ forloop.counter }}" 
+                     class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110">
+                
+                <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/70"></div>
+                
+                <div class="absolute top-3 left-3 w-9 h-9 rounded-full border-2 border-violet-500 p-0.5 bg-white/20 backdrop-blur-md z-10">
+                    <img src="https://ui-avatars.com/api/?name=User+{{ i }}&background=random" class="object-cover w-full h-full border rounded-full border-white/50">
+                </div>
+
+                <span class="absolute z-10 text-xs font-bold text-white bottom-3 left-3 drop-shadow-md">User {{ i }}</span>
+                
+                <a href="#" class="absolute inset-0 z-20"></a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button 
+            @click="scrollRight" 
+            x-show="canScrollRight"
+            class="absolute z-20 flex items-center justify-center w-10 h-10 transition-all -translate-y-1/2 rounded-full shadow-lg opacity-0 right-2 top-1/2 bg-white/80 backdrop-blur-sm text-slate-700 hover:bg-white group-hover/stories:opacity-100"
+        >
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <div class="glass-panel p-5 rounded-[2.5rem] border border-white/40 shadow-lg" x-data="{ expanded: false }">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="flex gap-4">
+                <div class="w-12 h-12 p-1 border rounded-full shadow-sm bg-white/30 backdrop-blur-sm border-white/50">
+                    <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ user.first_name }}{% endif %}" class="object-cover w-full h-full rounded-full">
+                </div>
+                <div class="flex-1">
+                    <textarea @click="expanded = true" name="texto" placeholder="No que você está pensando, {{ user.first_name }}?" class="w-full bg-white/40 border-none rounded-2xl p-3 text-sm focus:ring-2 focus:ring-violet-300/50 resize-none min-h-[50px] transition-all placeholder-slate-500 text-slate-700"></textarea>
+                </div>
+            </div>
+            <div x-show="expanded" x-collapse class="flex items-center justify-between pt-3 mt-3 border-t border-slate-100/30">
+                <div class="flex gap-3">
+                    <label class="p-2 transition rounded-full cursor-pointer hover:bg-emerald-50/50 text-emerald-500"><i class="text-lg fas fa-image"></i><input type="file" name="imagem" class="hidden"></label>
+                    <label class="p-2 transition rounded-full cursor-pointer hover:bg-rose-50/50 text-rose-500"><i class="text-lg fas fa-video"></i><input type="file" name="video" class="hidden"></label>
+                </div>
+                <button type="submit" class="bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-6 py-2 rounded-xl text-xs font-bold uppercase shadow-lg hover:shadow-violet-500/30 transition transform hover:-translate-y-0.5">Publicar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="space-y-6">
+        {% for post in posts %}
+        <div class="glass-panel p-0 rounded-[2.5rem] overflow-hidden shadow-md hover:shadow-xl transition duration-500 border border-white/40 group">
+            <div class="flex items-start justify-between p-5 bg-white/20 backdrop-blur-sm">
+                <div class="flex gap-3">
+                    <a href="{% url 'yourlife_social:profile_detail' post.autor.username %}">
+                        <img src="{% if post.autor.avatar %}{{ post.autor.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ post.autor.first_name }}{% endif %}" class="object-cover w-10 h-10 border border-white rounded-full shadow-sm">
+                    </a>
+                    <div>
+                        <a href="{% url 'yourlife_social:profile_detail' post.autor.username %}" class="block text-sm font-bold transition text-slate-800 hover:text-violet-600">{{ post.autor.get_full_name }}</a>
+                        <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wide">{{ post.data_criacao|timesince }} atrás</span>
+                    </div>
+                </div>
+                {% if post.autor == user %}
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" @click.away="open = false" class="p-2 transition text-slate-400 hover:text-slate-600"><i class="fas fa-ellipsis-h"></i></button>
+                    <div x-show="open" class="absolute right-0 z-20 w-40 mt-2 overflow-hidden border shadow-xl bg-white/95 backdrop-blur-xl rounded-xl border-slate-100" x-cloak>
+                        <a href="{% url 'yourlife_social:edit_post' post.id %}" class="flex items-center gap-2 px-4 py-3 text-xs font-bold transition text-slate-600 hover:bg-violet-50 hover:text-violet-600"><i class="fas fa-pen"></i> Editar</a>
+                        <a href="{% url 'yourlife_social:delete_post' post.id %}" onclick="return confirm('Apagar publicação?')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold transition text-rose-600 hover:bg-rose-50"><i class="fas fa-trash"></i> Excluir</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="px-5 pb-3">{% if post.conteudo %}<p class="text-[15px] text-slate-700 leading-relaxed whitespace-pre-line font-medium">{{ post.conteudo }}</p>{% endif %}</div>
+            {% if post.imagem %}<div class="w-full mt-2 bg-slate-100/50"><img src="{{ post.imagem.url }}" class="w-full object-cover max-h-[600px]"></div>{% endif %}
+            <div class="flex items-center justify-between p-4 mt-2 border-t bg-white/30 backdrop-blur-md border-white/40">
+                <div class="flex gap-6">
+                    <a href="{% url 'yourlife_social:toggle_like' post.id %}" class="flex items-center gap-2 text-sm font-bold {% if user in post.curtidas.all %}text-rose-500{% else %}text-slate-500 hover:text-rose-500{% endif %} transition"><i class="{% if user in post.curtidas.all %}fas animate-bounce{% else %}far{% endif %} fa-heart text-lg"></i> {{ post.curtidas.count }}</a>
+                    <button @click="commentOpen = commentOpen === {{ post.id }} ? null : {{ post.id }}" class="flex items-center gap-2 text-sm font-bold transition text-slate-500 hover:text-blue-500"><i class="text-lg far fa-comment"></i> {{ post.comentarios.count }}</button>
+                </div>
+                <a href="{% url 'yourlife_social:share_post' post.id %}" class="transition text-slate-400 hover:text-violet-600"><i class="text-lg fas fa-share"></i></a>
+            </div>
+            <div x-show="commentOpen === {{ post.id }}" x-collapse class="p-4 border-t bg-white/40 border-white/40">
+                <div class="mb-3 space-y-3 overflow-y-auto max-h-40 custom-scrollbar">
+                    {% for c in post.comentarios.all %}
+                    <div class="flex gap-3 group/comment">
+                        <img src="{% if c.autor.avatar %}{{ c.autor.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ c.autor.first_name }}{% endif %}" class="object-cover w-8 h-8 rounded-full">
+                        <div class="bg-white/60 p-2.5 rounded-2xl rounded-tl-none border border-white/50 shadow-sm flex-1 relative">
+                            <p class="text-xs font-bold text-slate-800">{{ c.autor.first_name }}</p>
+                            <p class="text-xs text-slate-600">{{ c.texto }}</p>
+                            {% if user == c.autor or user == post.autor %}
+                            <a href="{% url 'yourlife_social:delete_comment' c.id %}" class="absolute transition opacity-0 top-2 right-2 text-slate-300 hover:text-rose-500 group-hover/comment:opacity-100"><i class="fas fa-times"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <form action="{% url 'yourlife_social:add_comment' post.id %}" method="POST" class="flex gap-2">
+                    {% csrf_token %}
+                    <input name="comentario" class="flex-1 px-4 py-2 text-xs border-none rounded-full shadow-inner bg-white/70 placeholder-slate-400" placeholder="Escreva um comentário...">
+                    <button class="transition text-violet-600 hover:scale-110"><i class="text-lg fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+
+<script>
+    // Lógica para os botões de scroll dos Stories
+    function storiesScroll() {
+        return {
+            canScrollLeft: false,
+            canScrollRight: true,
+            
+            init() {
+                // Pequeno delay para garantir que o DOM renderizou
+                setTimeout(() => this.checkScroll(), 100);
+            },
+            
+            scrollLeft() {
+                this.$refs.storiesContainer.scrollBy({ left: -200, behavior: 'smooth' });
+            },
+            
+            scrollRight() {
+                this.$refs.storiesContainer.scrollBy({ left: 200, behavior: 'smooth' });
+            },
+            
+            checkScroll() {
+                const el = this.$refs.storiesContainer;
+                if (!el) return;
+                // Tolerância de 2px
+                this.canScrollLeft = el.scrollLeft > 2;
+                this.canScrollRight = el.scrollLeft < (el.scrollWidth - el.clientWidth - 2);
+            }
+        }
+    }
+</script>

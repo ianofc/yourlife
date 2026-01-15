@@ -1,0 +1,26 @@
+<a href="{% url 'yourlife_social:home' %}" class="inline-flex flex-col items-center justify-center px-5 text-blue-600 hover:bg-gray-50 group">
+    <i class="mb-1 text-xl fa-solid fa-house"></i>
+    <span class="text-xs">Home</span>
+</a>
+
+<a href="{% url 'yourlife_social:reels' %}" class="inline-flex flex-col items-center justify-center px-5 text-gray-500 hover:bg-gray-50 group">
+    <i class="mb-1 text-xl fa-solid fa-video"></i>
+    <span class="text-xs">Vídeo</span>
+</a>
+
+<a href="{% url 'yourlife_social:groups_list' %}" class="inline-flex flex-col items-center justify-center px-5 text-gray-500 hover:bg-gray-50 group">
+    <i class="mb-1 text-xl fa-solid fa-users"></i>
+    <span class="text-xs">Grupos</span>
+</a>
+
+<a href="{% url 'yourlife_social:notifications' %}" class="inline-flex flex-col items-center justify-center px-5 text-gray-500 hover:bg-gray-50 group">
+    <i class="mb-1 text-xl fa-solid fa-bell"></i>
+    <span class="text-xs">Avisos</span>
+</a>
+
+<a href="{% url 'yourlife_social:menu' %}" class="inline-flex flex-col items-center justify-center px-5 text-gray-500 hover:bg-gray-50 group">
+    <div class="flex items-center justify-center w-6 h-6 overflow-hidden text-xs bg-gray-300 rounded-full">
+        {{ request.user.username|slice:":1"|upper }}
+    </div>
+    <span class="text-xs">Menu</span>
+</a>

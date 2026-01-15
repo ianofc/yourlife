@@ -1,0 +1,100 @@
+{% extends 'social/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container max-w-5xl mx-auto mt-8 px-4">
+    <div class="flex flex-col gap-8 md:flex-row">
+        
+        <div class="w-full md:w-72 space-y-2">
+            <h1 class="mb-6 text-3xl font-black text-[var(--text-main)] font-display tracking-tight">Configurações</h1>
+            
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center gap-3 px-5 py-3.5 font-bold rounded-2xl bg-[var(--primary)] text-white shadow-lg shadow-primary/20 transition-all">
+                    <i class="fas fa-cog w-5 text-center"></i> Geral
+                </a>
+                
+                <a href="{% url 'yourlife_social:profile_edit' %}" class="flex items-center gap-3 px-5 py-3.5 font-bold rounded-2xl text-[var(--text-muted)] hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] transition-all">
+                    <i class="fas fa-user-edit w-5 text-center"></i> Editar Perfil
+                </a>
+                
+                <a href="#" class="flex items-center gap-3 px-5 py-3.5 font-bold rounded-2xl text-[var(--text-muted)] hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] transition-all">
+                    <i class="fas fa-bell w-5 text-center"></i> Notificações
+                </a>
+
+                <div class="h-px bg-[var(--border-color)] my-4 opacity-50"></div>
+
+                <a href="{% url 'yourlife_social:support_page' %}" class="flex items-center gap-3 px-5 py-3.5 font-bold rounded-2xl text-[var(--text-muted)] hover:bg-[var(--primary)]/10 hover:text-[var(--primary)] transition-all">
+                    <i class="fas fa-question-circle w-5 text-center"></i> Ajuda e Suporte
+                </a>
+            </nav>
+        </div>
+
+        <div class="flex-1 p-1 md:p-8 glass-panel rounded-[2.5rem] border border-[var(--border-color)] bg-[var(--bg-card)]/50 backdrop-blur-xl shadow-2xl">
+            <div class="p-6 md:p-0">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-[var(--text-main)]">Preferências do Sistema</h2>
+                    <p class="text-sm text-[var(--text-muted)] mt-1">Gerencie como o NioCortex se comporta para você.</p>
+                </div>
+
+                <form method="POST" class="space-y-10">
+                    {% csrf_token %}
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2 text-[var(--primary)] font-bold uppercase text-xs tracking-widest">
+                            <i class="fas fa-language"></i> Localização
+                        </div>
+                        <div>
+                            <label class="block mb-2 text-sm font-bold text-[var(--text-main)]">Idioma do Sistema</label>
+                            <select name="language" class="w-full p-4 border rounded-2xl bg-[var(--bg-body)]/50 border-[var(--border-color)] focus:ring-2 focus:ring-[var(--primary)] text-[var(--text-main)] outline-none transition-all appearance-none cursor-pointer">
+                                <option value="pt-br" selected>🇧🇷 Português (Brasil)</option>
+                                <option value="en-us">🇺🇸 English (United States)</option>
+                                <option value="es">🇪🇸 Español</option>
+                            </select>
+                            <p class="text-[10px] text-[var(--text-muted)] mt-2 ml-1">Isso afetará menus, botões e notificações automáticas.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2 text-[var(--primary)] font-bold uppercase text-xs tracking-widest">
+                            <i class="fas fa-eye"></i> Filtros de Conteúdo
+                        </div>
+                        
+                        <div class="grid gap-4">
+                            <div class="flex items-center justify-between p-5 border rounded-2xl bg-[var(--bg-body)]/30 border-[var(--border-color)] hover:bg-[var(--bg-body)]/50 transition-colors">
+                                <div class="pr-4">
+                                    <p class="font-bold text-[var(--text-main)]">Conteúdo Político</p>
+                                    <p class="text-xs text-[var(--text-muted)]">Permitir que publicações sobre política apareçam na sua timeline principal.</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="allow_politics" class="sr-only peer">
+                                    <div class="w-12 h-6 bg-gray-300/50 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--primary)]"></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center justify-between p-5 border rounded-2xl bg-[var(--bg-body)]/30 border-[var(--border-color)] hover:bg-[var(--bg-body)]/50 transition-colors">
+                                <div class="pr-4">
+                                    <p class="font-bold text-[var(--text-main)]">Modo Seguro (Conteúdo Sensível)</p>
+                                    <p class="text-xs text-[var(--text-muted)]">Desfocar automaticamente fotos ou vídeos que possam conter material sensível ou violento.</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="safe_mode" checked class="sr-only peer">
+                                    <div class="w-12 h-6 bg-gray-300/50 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--primary)]"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-8 border-t border-[var(--border-color)] flex flex-col md:flex-row items-center justify-between gap-4">
+                        <p class="text-xs text-[var(--text-muted)] italic text-center md:text-left">
+                            <i class="fas fa-info-circle mr-1"></i> Algumas alterações podem levar alguns instantes para serem aplicadas globalmente.
+                        </p>
+                        <button type="submit" class="w-full md:w-auto px-10 py-4 font-black text-white shadow-xl shadow-primary/30 bg-[var(--primary)] rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all">
+                            SALVAR ALTERAÇÕES
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

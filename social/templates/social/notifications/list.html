@@ -1,0 +1,48 @@
+{% extends 'social/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto mt-8 px-4">
+    <div class="glass-panel rounded-3xl p-6 min-h-[80vh]">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold font-display text-slate-800">Notificações</h1>
+            <button class="text-xs font-bold text-violet-600 hover:bg-violet-50 px-3 py-1 rounded-lg transition">Marcar todas como lidas</button>
+        </div>
+
+        <div class="space-y-2">
+            {% for n in notifications %}
+            <div class="flex items-center gap-4 p-4 rounded-2xl transition hover:bg-white/50 border border-transparent hover:border-white/60 {% if not n.is_read %}bg-violet-50/50{% endif %}">
+                <div class="relative shrink-0">
+                    <img src="{% if n.actor.avatar %}{{ n.actor.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ n.actor.first_name }}{% endif %}" class="w-12 h-12 rounded-full object-cover shadow-sm">
+                    
+                    <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] text-white shadow-sm
+                        {% if 'curtiu' in n.verb %}bg-rose-500{% elif 'comentou' in n.verb %}bg-blue-500{% else %}bg-violet-500{% endif %}">
+                        <i class="{% if 'curtiu' in n.verb %}fas fa-heart{% elif 'comentou' in n.verb %}fas fa-comment{% else %}fas fa-share{% endif %}"></i>
+                    </div>
+                </div>
+
+                <div class="flex-1">
+                    <p class="text-sm text-slate-700">
+                        <span class="font-bold">{{ n.actor.get_full_name }}</span> {{ n.verb }}
+                    </p>
+                    <p class="text-xs text-slate-400 mt-1">{{ n.created_at|timesince }} atrás</p>
+                </div>
+
+                {% if n.target_post.imagem %}
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0">
+                    <img src="{{ n.target_post.imagem.url }}" class="w-full h-full object-cover">
+                </div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="text-center py-20">
+                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300 text-3xl">
+                    <i class="far fa-bell-slash"></i>
+                </div>
+                <p class="text-slate-500 font-medium">Tudo tranquilo por aqui.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

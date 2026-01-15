@@ -1,0 +1,55 @@
+{% extends 'social/layout/base.html' %}
+{% block content %}
+<div class="max-w-5xl pt-4 mx-auto">
+    
+    <div class="flex items-center justify-between px-2 mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Grupos</h1>
+        <a href="{% url 'yourlife_social:group_create' %}" class="px-4 py-2 font-bold text-blue-600 transition bg-blue-100 rounded-lg hover:bg-blue-200">
+            <i class="mr-1 fa-solid fa-plus"></i> Criar Novo Grupo
+        </a>
+    </div>
+
+    <h2 class="px-2 mb-3 text-lg font-bold text-gray-600">Grupos que você gerencia/participa</h2>
+    <div class="grid grid-cols-1 gap-4 mb-8 md:grid-cols-2 lg:grid-cols-3">
+        {% for grupo in meus_grupos %}
+        <a href="{% url 'yourlife_social:group_detail' group_id=grupo.id %}" class="flex flex-col overflow-hidden transition bg-white border border-gray-100 shadow-sm rounded-xl hover:shadow-md">
+            <div class="relative h-24 bg-gray-300">
+                {% if grupo.capa %}
+                    <img src="{{ grupo.capa.url }}" class="object-cover w-full h-full">
+                {% else %}
+                    <div class="w-full h-full bg-gradient-to-r from-green-400 to-blue-500"></div>
+                {% endif %}
+            </div>
+            <div class="flex-1 p-4">
+                <h3 class="text-lg font-bold text-gray-900 truncate">{{ grupo.nome }}</h3>
+                <p class="mb-3 text-sm text-gray-500 line-clamp-2">{{ grupo.descricao }}</p>
+                <div class="flex items-center mt-auto text-xs text-gray-400">
+                    <span class="mr-2">{{ grupo.membros.count }} membros</span>
+                    {% if grupo.privado %}<i class="fa-solid fa-lock" title="Privado"></i>{% else %}<i class="fa-solid fa-globe" title="Público"></i>{% endif %}
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="col-span-3 py-8 text-center text-gray-500 bg-white border border-dashed rounded-lg">
+            Você ainda não participa de nenhum grupo.
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="px-2 mb-3 text-lg font-bold text-gray-600">Sugestões para você</h2>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {% for grupo in sugestoes %}
+            <div class="flex items-center gap-3 p-4 bg-white border border-gray-100 shadow-sm rounded-xl">
+                <div class="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-200 rounded-lg">
+                    {% if grupo.capa %}<img src="{{ grupo.capa.url }}" class="object-cover w-full h-full">{% endif %}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h4 class="font-bold text-gray-900 truncate">{{ grupo.nome }}</h4>
+                    <p class="text-xs text-gray-500">{{ grupo.membros.count }} membros</p>
+                </div>
+                <button class="px-3 py-1 text-sm font-bold text-blue-600 rounded bg-blue-50 hover:bg-blue-100">Entrar</button>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

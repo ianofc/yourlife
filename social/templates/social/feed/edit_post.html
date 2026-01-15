@@ -1,0 +1,16 @@
+{% extends 'social/layout/base.html' %}
+{% block content %}
+<div class="max-w-2xl mx-auto mt-10">
+    <div class="p-6 glass-panel rounded-3xl">
+        <h2 class="mb-4 text-xl font-bold text-slate-800">Editar Publicação</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <textarea name="texto" rows="5" class="w-full p-4 mb-4 border-none bg-slate-50 rounded-xl focus:ring-2 focus:ring-violet-500">{{ post.conteudo }}</textarea>
+            <div class="flex justify-end gap-3">
+                <a href="{% url 'yourlife_social:home' %}" class="px-4 py-2 text-slate-500 hover:text-slate-700">Cancelar</a>
+                <button type="submit" class="px-6 py-2 text-white bg-violet-600 rounded-xl hover:bg-violet-700">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

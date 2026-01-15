@@ -1,0 +1,27 @@
+{% extends 'social/layout/base.html' %}
+{% block content %}
+<div class="max-w-4xl pt-4 mx-auto">
+    <h1 class="mb-6 text-2xl font-bold">Solicitações de Amizade</h1>
+    
+    <div class="space-y-3">
+        {% for req in requests %}
+        <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gray-200 rounded-full"></div> <div>
+                    <h3 class="text-lg font-bold">{{ req.from_user.username }}</h3>
+                    <p class="text-sm text-gray-500">quer ser seu amigo</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button class="px-6 py-2 font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700">Aceitar</button>
+                <button class="px-6 py-2 font-bold text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Recusar</button>
+            </div>
+        </div>
+        {% empty %}
+        <div class="py-10 text-center bg-white border border-dashed rounded-lg">
+            <p class="text-gray-500">Nenhuma solicitação pendente.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

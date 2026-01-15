@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChromaFeed Premium | Interface de Exploração</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        [x-cloak] { display: none !important; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #050608;
+            color: #f4f4f5;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050608; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+        /* Animações e Efeitos */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .gradient-border {
+            position: relative;
+            border-radius: 1rem;
+            background: linear-gradient(to right, #d946ef, #8b5cf6);
+            padding: 1px;
+        }
+
+        .card-inner {
+            background: #050608;
+            border-radius: 0.95rem;
+        }
+
+        .overlay-grad {
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animate-float { animation: float 4s ease-in-out infinite; }
+
+        /* Grid Masonry-ish hack para manter consistência de formatos */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-auto-rows: 150px;
+            gap: 1.5rem;
+        }
+
+        .item-square { grid-row: span 2; }
+        .item-reel { grid-row: span 4; }
+
+    </style>
+</head>
+<body x-data="mainApp()" x-cloak>
+
+    <header class="sticky top-0 z-[100] w-full border-b border-white/5 bg-[#050608]/90 backdrop-blur-2xl">
+        <div class="max-w-[1600px] mx-auto px-8 h-24 flex items-center justify-between">
+            
+            <div class="flex items-center gap-4 cursor-pointer group">
+                <div class="relative">
+                    <div class="absolute transition duration-1000 opacity-25 -inset-1 bg-gradient-to-r from-fuchsia-600 to-violet-600 rounded-xl blur group-hover:opacity-60 group-hover:duration-200"></div>
+                    <div class="relative w-12 h-12 bg-[#0a0c10] rounded-xl flex items-center justify-center border border-white/10 overflow-hidden">
+                        <i class="text-2xl text-transparent fa-solid fa-compass bg-gradient-to-br from-fuchsia-400 to-violet-500 bg-clip-text"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight bg-white bg-clip-text">Explorar</h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold">ChromaFeed Premium</p>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center bg-zinc-900/50 p-1.5 rounded-2xl border border-white/5 shadow-inner">
+                <template x-for="category in categories">
+                    <button 
+                        @click="activeCategory = category.id"
+                        :class="activeCategory === category.id ? 'bg-gradient-to-r from-fuchsia-600 to-violet-600 text-white shadow-lg' : 'text-zinc-400 hover:text-zinc-200'"
+                        class="flex items-center gap-2 px-8 py-3 text-sm font-bold transition-all duration-300 rounded-xl"
+                    >
+                        <i :class="category.icon"></i>
+                        <span x-text="category.label"></span>
+                    </button>
+                </template>
+            </nav>
+
+            <div class="flex items-center gap-6">
+                <div class="items-center hidden gap-4 px-4 mr-2 border-r lg:flex border-white/10">
+                    <div class="text-right">
+                        <p class="text-xs font-bold text-white">Alpha Designer</p>
+                        <p class="text-[10px] text-zinc-500 font-semibold">Pro Plan Active</p>
+                    </div>
+                    <img src="https://i.pravatar.cc/150?u=alpha" class="w-10 h-10 rounded-full border border-fuchsia-500/50 p-0.5">
+                </div>
+                <button class="relative flex items-center justify-center w-12 h-12 transition rounded-full glass-panel hover:bg-white/10">
+                    <i class="fa-solid fa-bell text-zinc-400"></i>
+                    <span class="absolute top-3 right-3 w-2 h-2 bg-fuchsia-500 rounded-full border-2 border-[#050608]"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] mx-auto px-8 py-10">
+
+        <section class="mb-16">
+            <div class="relative w-full h-[550px] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/5 group">
+                <div class="absolute inset-0 transition-transform duration-1000 group-hover:scale-105">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=90&w=2200" 
+                         class="object-cover w-full h-full" 
+                         alt="Mergulhadora Banner">
+                </div>
+
+                <div class="absolute inset-0 bg-gradient-to-t from-[#050608] via-transparent to-black/20"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
+
+                <div class="absolute inset-0 flex flex-col justify-between p-12 pointer-events-none">
+                    <div class="flex items-start justify-between pointer-events-auto">
+                        <span class="px-5 py-2 text-xs font-bold tracking-widest uppercase rounded-full glass-panel text-fuchsia-400 border-fuchsia-500/30">
+                            Discovery Feature
+                        </span>
+                        <button class="flex items-center justify-center w-12 h-12 text-white transition rounded-full glass-panel hover:scale-110">
+                            <i class="fa-solid fa-expand"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-end justify-between pointer-events-auto">
+                        <div class="max-w-2xl">
+                            <div class="flex items-center gap-4 mb-6">
+                                <img src="https://i.pravatar.cc/150?u=maria" class="w-16 h-16 border-2 shadow-xl rounded-2xl border-fuchsia-600 shadow-fuchsia-600/20">
+                                <div>
+                                    <h2 class="flex items-center gap-2 text-2xl font-bold text-white">
+                                        Maria Silva 
+                                        <i class="text-sm text-blue-400 fa-solid fa-circle-check"></i>
+                                    </h2>
+                                    <p class="font-medium text-zinc-400">@mariadesign • Criadora de Conteúdo</p>
+                                </div>
+                            </div>
+                            <h3 class="mb-4 text-5xl font-extrabold leading-tight tracking-tight text-white">
+                                Paisagem incrível das montanhas <br>ao pôr do sol <span class="text-fuchsia-500">✨</span>
+                            </h3>
+                        </div>
+
+                        <div class="flex flex-col gap-4">
+                            <div class="glass-panel p-6 rounded-[2rem] flex flex-col gap-6 items-center border-white/10">
+                                <button class="flex flex-col items-center gap-1 group">
+                                    <i class="text-2xl transition fa-solid fa-heart text-fuchsia-500 group-hover:scale-125"></i>
+                                    <span class="text-xs font-bold">15.4K</span>
+                                </button>
+                                <button class="flex flex-col items-center gap-1 group">
+                                    <i class="text-2xl transition fa-solid fa-comment text-zinc-300 group-hover:scale-125"></i>
+                                    <span class="text-xs font-bold">342</span>
+                                </button>
+                                <button class="flex flex-col items-center gap-1 group">
+                                    <i class="text-2xl transition fa-solid fa-share-nodes text-zinc-300 group-hover:scale-125"></i>
+                                    <span class="text-xs font-bold">89</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center justify-between mb-12">
+                <div class="flex items-center gap-4">
+                    <div class="w-2 h-10 bg-gradient-to-b from-fuchsia-600 to-violet-600 rounded-full shadow-[0_0_15px_rgba(217,70,239,0.5)]"></div>
+                    <div>
+                        <h2 class="text-3xl font-extrabold tracking-tight">Descubra</h2>
+                        <p class="text-sm font-medium text-zinc-500">Explorando o melhor da comunidade global</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="flex items-center justify-center w-10 h-10 transition border rounded-full border-white/5 hover:bg-white/5"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="flex items-center justify-center w-10 h-10 transition border rounded-full border-white/5 hover:bg-white/5"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="media-grid">
+                
+                <template x-for="(item, index) in feedItems" :key="index">
+                    <div 
+                        :class="item.type === 'reel' ? 'item-reel' : 'item-square'"
+                        class="group relative rounded-[2rem] overflow-hidden bg-zinc-900 border border-white/5 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-fuchsia-900/10 cursor-pointer"
+                        @click="openModal(item)"
+                    >
+                        <img :src="item.image" class="object-cover w-full h-full transition duration-700 group-hover:scale-110">
+                        
+                        <template x-if="item.type === 'reel'">
+                            <div class="absolute top-6 right-6 z-20 bg-fuchsia-600/90 backdrop-blur-md px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+                                <i class="fa-solid fa-play animate-pulse"></i> Reels
+                            </div>
+                        </template>
+
+                        <div class="absolute inset-0 flex flex-col justify-end p-8 transition-all duration-300 opacity-0 overlay-grad group-hover:opacity-100">
+                            <div class="flex items-center justify-between transition-transform duration-500 translate-y-4 group-hover:translate-y-0">
+                                <div class="flex gap-4">
+                                    <div class="flex items-center gap-2">
+                                        <i class="text-xl fa-solid fa-heart text-fuchsia-500"></i>
+                                        <span class="font-bold" x-text="item.likes"></span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <i class="text-xl text-white fa-solid fa-comment"></i>
+                                        <span class="font-bold" x-text="item.comments"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full glass-panel">
+                                    <i class="text-sm fa-solid fa-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <template x-if="item.type === 'reel'">
+                            <div class="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100">
+                                <div class="flex items-center justify-center w-16 h-16 border rounded-full shadow-2xl bg-white/20 backdrop-blur-xl border-white/30">
+                                    <i class="ml-1 text-2xl text-white fa-solid fa-play"></i>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+            </div>
+        </section>
+
+        <footer class="pt-12 mt-24 border-t border-white/5 text-zinc-600">
+            <div class="flex flex-col items-center justify-between gap-8 mb-12 md:flex-row">
+                <div class="flex items-center gap-8">
+                    <img src="https://i.pravatar.cc/150?u=alpha" class="w-12 h-12 opacity-50 grayscale">
+                    <p class="max-w-xs text-sm leading-relaxed">
+                        ChromaFeed é a plataforma definitiva para curadoria visual e descoberta de talentos criativos globais.
+                    </p>
+                </div>
+                <div class="flex gap-12 text-sm font-bold tracking-widest uppercase">
+                    <a href="#" class="transition hover:text-fuchsia-500">Sobre</a>
+                    <a href="#" class="transition hover:text-fuchsia-500">Privacidade</a>
+                    <a href="#" class="transition hover:text-fuchsia-500">Diretrizes</a>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex items-center justify-center w-10 h-10 transition border cursor-pointer border-white/10 rounded-xl hover:bg-white/5"><i class="fa-brands fa-instagram"></i></div>
+                    <div class="flex items-center justify-center w-10 h-10 transition border cursor-pointer border-white/10 rounded-xl hover:bg-white/5"><i class="fa-brands fa-tiktok"></i></div>
+                    <div class="flex items-center justify-center w-10 h-10 transition border cursor-pointer border-white/10 rounded-xl hover:bg-white/5"><i class="fa-brands fa-dribbble"></i></div>
+                </div>
+            </div>
+            <div class="text-center text-[10px] font-bold tracking-[0.5em] pb-12 opacity-30">
+                COPYRIGHT © 2026 CHROMAFEED INC. ALL RIGHTS RESERVED.
+            </div>
+        </footer>
+    </main>
+
+    <div x-show="modalOpen" 
+         class="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-12"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95">
+        
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-2xl" @click="modalOpen = false"></div>
+        
+        <div class="relative bg-[#0a0c10] border border-white/10 rounded-[3rem] w-full max-w-6xl h-full max-h-[800px] overflow-hidden flex flex-col md:flex-row shadow-2xl">
+            <div class="flex items-center justify-center flex-1 overflow-hidden bg-black">
+                <img :src="selectedItem.image" class="object-cover w-full h-full">
+            </div>
+            <div class="w-full md:w-[400px] p-10 flex flex-col h-full bg-zinc-900/30">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-fuchsia-500 to-violet-500 rounded-full p-0.5">
+                        <img src="https://i.pravatar.cc/100" class="w-full h-full rounded-full border-2 border-[#0a0c10] object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white">Criador Especial</h4>
+                        <p class="text-xs font-bold text-zinc-500">@design_pro</p>
+                    </div>
+                </div>
+                <div class="flex-1 pr-2 overflow-y-auto custom-scroll">
+                    <p class="mb-6 leading-relaxed text-zinc-300" x-text="selectedItem.caption || 'Sem descrição.'"></p>
+                    <div class="space-y-4">
+                        <template x-for="i in 3">
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-zinc-800 shrink-0"></div>
+                                <div class="p-3 rounded-tl-none bg-white/5 rounded-2xl">
+                                    <p class="text-[11px] font-bold text-zinc-400 mb-1">User_842</p>
+                                    <p class="text-xs text-zinc-300">Essa composição é simplesmente fantástica!</p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <button @click="modalOpen = false" class="py-4 mt-8 font-black tracking-widest text-black uppercase transition-colors duration-300 bg-white rounded-2xl hover:bg-fuchsia-500 hover:text-white">
+                    Fechar Galeria
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mainApp() {
+            return {
+                activeCategory: 'para-voce',
+                modalOpen: false,
+                selectedItem: {},
+                categories: [
+                    { id: 'tendencias', label: 'Tendências', icon: 'fa-solid fa-arrow-trend-up' },
+                    { id: 'para-voce', label: 'Para Você', icon: 'fa-solid fa-sparkles' },
+                    { id: 'reels', label: 'Reels', icon: 'fa-solid fa-clapperboard' }
+                ],
+                feedItems: [
+                    { type: 'photo', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800', likes: '1.2K', comments: '45', caption: 'O topo do mundo em um único clique.' },
+                    { type: 'reel', image: 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?w=800', likes: '12K', comments: '1.4K', caption: 'Natureza selvagem capturada em 4K.' },
+                    { type: 'photo', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800', likes: '940', comments: '12', caption: 'Reflexos de um amanhecer sereno.' },
+                    { type: 'photo', image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800', likes: '3.1K', comments: '88' },
+                    { type: 'reel', image: 'https://images.unsplash.com/photo-1585110396000-c9285742770f?w=800', likes: '45K', comments: '3K' },
+                    { type: 'photo', image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=800', likes: '2.5K', comments: '67' },
+                    { type: 'photo', image: 'https://images.unsplash.com/photo-1490750967868-58cb75069ed6?w=800', likes: '8.2K', comments: '120' },
+                    { type: 'reel', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800', likes: '5.6K', comments: '410' },
+                    { type: 'photo', image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800', likes: '1.1K', comments: '30' },
+                    { type: 'photo', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800', likes: '4.4K', comments: '95' },
+                    { type: 'reel', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800', likes: '22K', comments: '800' },
+                    { type: 'photo', image: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800', likes: '700', comments: '10' }
+                ],
+                openModal(item) {
+                    this.selectedItem = item;
+                    this.modalOpen = true;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

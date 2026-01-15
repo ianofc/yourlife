@@ -1,0 +1,23 @@
+{% if resultados_busca %}
+    {% for pessoa in resultados_busca %}
+        {% endfor %}
+{% else %}
+    <div class="py-8 text-center">
+        <i class="mb-3 text-4xl text-gray-300 fas fa-search"></i>
+        <p class="font-medium text-gray-600">Não encontramos "{{ termo_busca }}" no NioCortex.</p>
+        <p class="mb-4 text-sm text-gray-500">Eles trabalham ou estudam aqui? Envie um convite!</p>
+        
+        <button onclick="copiarConvite()" class="px-6 py-2 font-bold text-white transition bg-green-500 rounded-full hover:bg-green-600">
+            <i class="mr-2 fab fa-whatsapp"></i> Convidar para o NioCortex
+        </button>
+    </div>
+
+    <script>
+        function copiarConvite() {
+            // Gera um link de convite (pode ser real ou fake por enquanto)
+            const link = "Olá! Venha fazer parte da rede social da nossa escola: " + window.location.origin + "/social/register";
+            navigator.clipboard.writeText(link);
+            alert("Link de convite copiado! Envie para seu colega.");
+        }
+    </script>
+{% endif %}

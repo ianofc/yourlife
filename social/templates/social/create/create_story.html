@@ -1,0 +1,37 @@
+
+{% extends 'social/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10">
+    <div class="p-6 border shadow-xl glass-panel rounded-3xl border-white/40 bg-white/30 backdrop-blur-md">
+        <h2 class="mb-6 text-2xl font-bold text-center text-slate-800">Criar Novo Story</h2>
+        
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="space-y-2">
+                <label class="block text-sm font-bold text-slate-700">Imagem ou Vídeo</label>
+                <div class="relative flex flex-col items-center justify-center w-full h-48 transition border-2 border-dashed cursor-pointer border-violet-300 rounded-2xl bg-white/50 hover:bg-white/80 group">
+                    <input type="file" name="imagem" accept="image/*,video/*" class="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer">
+                    <div class="p-4 text-center">
+                        <i class="mb-2 text-3xl transition fas fa-cloud-upload-alt text-violet-400 group-hover:scale-110"></i>
+                        <p class="text-xs font-medium text-slate-500">Toque para selecionar</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-sm font-bold text-slate-700">Legenda (Opcional)</label>
+                <input type="text" name="legenda" class="w-full px-4 py-3 transition border outline-none rounded-xl border-slate-200 bg-white/70 focus:ring-2 focus:ring-violet-500 focus:border-transparent" placeholder="Escreva algo...">
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-xl font-bold shadow-lg hover:shadow-violet-500/30 transform hover:-translate-y-0.5 transition">
+                Publicar Story
+            </button>
+            
+            <a href="{% url 'yourlife_social:home' %}" class="block mt-4 text-xs font-bold text-center text-slate-500 hover:text-slate-800">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

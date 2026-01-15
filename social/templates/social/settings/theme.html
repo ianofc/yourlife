@@ -1,0 +1,13 @@
+{% extends 'social/layout/base.html' %}
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10">
+    <div class="p-8 text-center glass-panel rounded-3xl">
+        <div class="flex items-center justify-center w-20 h-20 mx-auto mb-6 text-4xl rounded-full bg-violet-100 text-violet-600">
+            <i class="fas fa-tools"></i>
+        </div>
+        <h1 class="mb-4 text-3xl font-bold text-slate-800 font-display">Configurações & Suporte</h1>
+        <p class="max-w-lg mx-auto mb-8 text-slate-600">Esta área está sendo construída. Em breve você poderá ajustar suas preferências de privacidade e conta.</p>
+        <a href="{% url 'yourlife_social:home' %}" class="inline-block px-8 py-3 font-bold text-white transition bg-violet-600 rounded-xl hover:bg-violet-700">Voltar ao Feed</a>
+    </div>
+</div>
+{% endblock %}

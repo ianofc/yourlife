@@ -1,0 +1,34 @@
+
+{% load static %}
+<div class="flex flex-col h-full overflow-hidden font-sans bg-transparent">
+    <div class="flex items-center gap-4 p-5 border-b border-white/30 bg-white/20">
+        <div class="relative">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 p-0.5 shadow-lg">
+                <div class="flex items-center justify-center w-full h-full bg-white rounded-full">
+                    <i class="text-xl text-purple-600 fas fa-brain"></i>
+                </div>
+            </div>
+            <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
+        </div>
+        <div>
+            <h3 class="text-lg font-black leading-tight tracking-tight text-slate-900">Conscios IA</h3>
+            <p class="text-[10px] text-purple-600 font-black uppercase tracking-widest">Sua vibe, sua rede</p>
+        </div>
+    </div>
+
+    <div id="conscios-messages" class="flex flex-col flex-1 p-5 overflow-y-auto no-scrollbar bg-slate-50/20">
+        <div class="msg-bubble msg-ai">
+            E aí! Eu sou o <b>Conscios</b>. 😎 <br><br>Pronto para ver o que tá rolando na YourLife? Posso te ajudar a encontrar a galera, descobrir novos grupos ou só trocar uma ideia enquanto você navega. Como tá o seu dia?
+        </div>
+    </div>
+
+    <div class="ai-input-area">
+        <form id="conscios-form" class="flex items-center gap-2 bg-white rounded-3xl p-1.5 shadow-md border border-slate-100">
+            <button type="button" class="p-2 transition text-slate-400 hover:text-purple-500"><i class="text-xl fas fa-smile-wink"></i></button>
+            <input type="text" id="conscios-input" placeholder="Mande um salve ou pergunte algo..." class="flex-1 px-1 py-2 text-sm bg-transparent outline-none text-slate-700">
+            <button type="submit" class="flex items-center justify-center w-10 h-10 text-white transition bg-purple-600 rounded-full shadow-lg hover:scale-105">
+                <i class="text-sm fas fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</div>

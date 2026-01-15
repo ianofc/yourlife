@@ -1,0 +1,24 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'core/css/ai_messenger.css' %}">
+
+<div x-show="$store.nav.drawers.conscios" 
+     x-transition:enter="transition ease-out duration-400" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+     @click.away="$store.nav.drawers.conscios = false"
+     class="fixed inset-y-0 right-0 w-full md:w-[450px] z-[200] ai-glass-panel shadow-2xl flex flex-col" x-cloak>
+     <button @click="$store.nav.drawers.conscios = false" class="absolute flex items-center justify-center w-10 h-10 transition-all rounded-full shadow-xl top-5 -left-12 bg-white/80 backdrop-blur-md text-slate-600 hover:text-red-500"><i class="fas fa-times"></i></button>
+     {% include 'social/components/conscios_widget.html' %}
+</div>
+
+<div x-show="$store.nav.drawers.talkio" 
+     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+     @click.away="$store.nav.drawers.talkio = false"
+     class="fixed inset-y-0 right-0 w-full md:w-[450px] z-[200] ai-glass-panel shadow-2xl flex flex-col" x-cloak>
+     <button @click="$store.nav.drawers.talkio = false" class="absolute flex items-center justify-center w-10 h-10 transition-all rounded-full shadow-xl top-5 -left-12 bg-white/80 backdrop-blur-md text-slate-600 hover:text-red-500"><i class="fas fa-times"></i></button>
+     <iframe src="{% url 'yourlife_social:talkio_app' %}" class="w-full h-full bg-transparent border-0"></iframe>
+</div>
+
+<div x-show="$store.nav.drawers.notif" @click.away="$store.nav.drawers.notif = false"
+     class="fixed inset-y-0 right-0 w-full md:w-[400px] z-[200] bg-white p-5 shadow-2xl flex flex-col border-l" x-cloak>
+     <div class="flex items-center justify-between pb-4 mb-4 border-b"><h3 class="text-lg font-black tracking-tight text-slate-800">Notificações</h3><button @click="$store.nav.drawers.notif = false"><i class="fas fa-times text-slate-400"></i></button></div>
+     <div class="flex flex-col items-center justify-center flex-1 text-slate-400"><i class="mb-3 text-4xl far fa-bell-slash opacity-20"></i><p class="text-sm font-bold tracking-widest uppercase">Nada por aqui</p></div>
+</div>

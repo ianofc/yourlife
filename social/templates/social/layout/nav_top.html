@@ -1,0 +1,55 @@
+<nav class="fixed top-0 z-50 flex items-center justify-between w-full px-4 bg-white shadow-sm h-14">
+    
+    <div class="flex items-center gap-2">
+        <a href="{% url 'yourlife_social:home' %}">
+            <div class="flex items-center justify-center w-10 h-10 text-2xl font-bold text-white rounded-full cursor-pointer bg-fb-blue">
+                N
+            </div>
+        </a>
+        <div class="hidden lg:flex items-center bg-[#f0f2f5] px-3 py-2.5 rounded-full w-64 h-10">
+            <i class="mr-2 fas fa-search text-fb-text-sec"></i>
+            <input type="text" placeholder="Pesquisar no NioCortex" class="w-full text-sm placeholder-gray-500 bg-transparent border-none outline-none">
+        </div>
+        <div class="lg:hidden w-10 h-10 bg-[#f0f2f5] rounded-full flex items-center justify-center text-fb-text-sec">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+
+    <div class="items-center hidden h-full gap-1 md:flex xl:gap-8">
+        <a href="{% url 'yourlife_social:home' %}" class="relative flex items-center h-full px-8 border-b-4 border-fb-blue text-fb-blue">
+            <i class="text-2xl fas fa-home"></i>
+        </a>
+        <a href="{% url 'yourlife_social:groups_list' %}" class="relative flex items-center h-full px-8 border-b-4 border-transparent rounded-lg hover:bg-gray-100 text-fb-text-sec group">
+            <i class="text-2xl fas fa-users group-hover:text-fb-text"></i>
+        </a>
+        <a href="{% url 'yourlife_social:reels' %}" class="relative flex items-center h-full px-8 border-b-4 border-transparent rounded-lg hover:bg-gray-100 text-fb-text-sec group">
+            <i class="text-2xl fas fa-video group-hover:text-fb-text"></i>
+        </a>
+        {% if 'PROFESSOR' in user.role %}
+        <a href="{% url 'pedagogico:listar_turmas' %}" class="relative flex items-center h-full px-8 border-b-4 border-transparent rounded-lg hover:bg-gray-100 text-fb-text-sec group" title="Turmas">
+            <i class="text-2xl fas fa-chalkboard-teacher group-hover:text-fb-text"></i>
+        </a>
+        {% else %}
+        <a href="{% url 'core:student_subjects' %}" class="relative flex items-center h-full px-8 border-b-4 border-transparent rounded-lg hover:bg-gray-100 text-fb-text-sec group" title="Disciplinas">
+            <i class="text-2xl fas fa-graduation-cap group-hover:text-fb-text"></i>
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="flex items-center gap-2">
+        <div class="hidden fb-icon-btn xl:flex"><i class="fas fa-th"></i></div>
+        <div class="fb-icon-btn"><i class="fab fa-facebook-messenger"></i></div>
+        <div class="fb-icon-btn"><i class="fas fa-bell"></i></div>
+        
+        <a href="{% url 'yourlife_social:meu_perfil' %}" class="relative ml-1">
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" class="object-cover w-10 h-10 border border-gray-200 rounded-full">
+            {% else %}
+                <div class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full">
+                    <i class="text-gray-500 fas fa-user"></i>
+                </div>
+            {% endif %}
+            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+        </a>
+    </div>
+</nav>

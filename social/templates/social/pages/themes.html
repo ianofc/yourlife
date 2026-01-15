@@ -1,0 +1,53 @@
+{% extends 'social/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10">
+    <div class="p-8 glass-panel rounded-3xl">
+        <h1 class="mb-2 text-3xl font-bold text-slate-800 font-display">Aparência e Temas</h1>
+        <p class="mb-8 text-slate-500">Personalize sua experiência no NioCortex.</p>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            
+            <div onclick="setTheme('aurora')" class="relative overflow-hidden transition border-2 cursor-pointer group rounded-2xl border-slate-200 hover:border-violet-500">
+                <div class="h-24 bg-gradient-to-br from-violet-200 to-cyan-200"></div>
+                <div class="p-4">
+                    <h4 class="font-bold text-slate-800">Aurora Clean</h4>
+                    <p class="text-xs text-slate-500">O tema padrão, leve e moderno.</p>
+                </div>
+            </div>
+
+            <div onclick="setTheme('male_dark')" class="relative overflow-hidden transition border-2 cursor-pointer group rounded-2xl border-slate-200 hover:border-blue-600 bg-slate-900">
+                <div class="h-24 bg-gradient-to-br from-blue-900 to-black"></div>
+                <div class="p-4">
+                    <h4 class="font-bold text-white">Midnight Blue</h4>
+                    <p class="text-xs text-slate-400">Estilo masculino clássico.</p>
+                </div>
+            </div>
+
+            <div onclick="setTheme('female_dark')" class="relative overflow-hidden transition border-2 cursor-pointer group rounded-2xl border-slate-200 hover:border-pink-500 bg-slate-900">
+                <div class="h-24 bg-gradient-to-br from-pink-900 to-black"></div>
+                <div class="p-4">
+                    <h4 class="font-bold text-white">Cyber Pink</h4>
+                    <p class="text-xs text-slate-400">Estilo feminino moderno.</p>
+                </div>
+            </div>
+            
+            <div onclick="setTheme('male_premium')" class="relative overflow-hidden transition border-2 border-yellow-400 cursor-pointer group rounded-2xl hover:shadow-xl bg-emerald-900">
+                <div class="absolute top-2 left-2 px-2 py-0.5 bg-yellow-400 text-yellow-900 text-[10px] font-black uppercase rounded">Premium</div>
+                <div class="h-24 bg-gradient-to-br from-emerald-800 to-yellow-600"></div>
+                <div class="p-4">
+                    <h4 class="font-bold text-yellow-400">Royal Emerald</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setTheme(themeName) {
+        localStorage.setItem('niocortex_theme', themeName);
+        alert('Tema ' + themeName + ' selecionado! (A aplicação real requer reload)');
+    }
+</script>
+{% endblock %}

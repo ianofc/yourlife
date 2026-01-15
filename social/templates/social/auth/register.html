@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta | NioCortex Lumina</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        nio: {
+                            50: '#f2f0ff', 100: '#e6e1ff', 200: '#d0c4ff', 300: '#b09aff',
+                            400: '#8e66ff', 500: '#7c3aed', 600: '#6d28d9', 700: '#5b21b6', 
+                            800: '#4c1d95', 900: '#3e1a75', 950: '#260e4b',
+                        },
+                        lumina: { cyan: '#00E5FF', pink: '#FF2E93', green: '#10B981' }
+                    },
+                    animation: { 'blob': 'blob 10s infinite' },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .form-input {
+            transition: all 0.2s ease-in-out;
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+            border-color: #7c3aed;
+        }
+        /* Ajuste para inputs automáticos do Django */
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 0.875rem 1rem 0.875rem 2.75rem; /* Padding para ícone */
+            font-size: 0.875rem;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="relative flex flex-col min-h-screen overflow-hidden font-sans antialiased bg-slate-50 text-slate-800 selection:bg-nio-500 selection:text-white">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-lumina-cyan/15 rounded-full mix-blend-multiply filter blur-[100px] animate-blob"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-nio-400/15 rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-2000"></div>
+    </div>
+
+    <nav class="absolute top-0 left-0 z-50 w-full p-6">
+        <div class="flex items-center justify-between mx-auto max-w-7xl">
+            <a href="{% url 'stage_publico:index' %}" class="flex items-center gap-3 group">
+                <div class="relative flex items-center justify-center w-8 h-8">
+                    <div class="absolute inset-0 transition-transform duration-300 rounded-lg bg-nio-600 rotate-6 opacity-20 group-hover:rotate-12"></div>
+                    <div class="absolute inset-0 border rounded-lg shadow-sm bg-white/60 backdrop-blur border-white/50"></div>
+                    <svg class="relative z-10 w-5 h-5 text-nio-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 4L5 20" class="opacity-30"/>
+                        <path d="M5 4v16l14-16v16" />
+                        <circle cx="12" cy="12" r="2" fill="#00E5FF" stroke="none"/>
+                    </svg>
+                </div>
+                <span class="text-lg font-bold leading-none font-display text-slate-900">Nio<span class="text-nio-600">Cortex</span></span>
+            </a>
+            
+            <a href="{% url 'yourlife_social:login' %}" class="text-sm font-medium transition text-slate-500 hover:text-nio-600">
+                Já tem conta? <span class="font-bold underline decoration-nio-300 underline-offset-2">Fazer Login</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="relative z-10 flex items-center justify-center flex-grow px-4 py-20">
+        <div class="w-full max-w-md">
+            
+            <div class="mb-8 text-center">
+                <h1 class="mb-2 text-3xl font-black font-display text-slate-900">Comece Gratuitamente</h1>
+                <p class="text-slate-500">Crie sua conta e revolucione sua gestão escolar.</p>
+            </div>
+
+            <div class="p-8 shadow-xl glass-panel rounded-3xl shadow-nio-500/5">
+                
+                {% if messages %}
+                    <div class="mb-6 space-y-2">
+                        {% for message in messages %}
+                            <div class="p-3 rounded-xl text-sm font-medium flex items-start gap-3
+                                {% if message.tags == 'error' %} bg-red-50 text-red-600 border border-red-100
+                                {% elif message.tags == 'success' %} bg-green-50 text-green-600 border border-green-100
+                                {% else %} bg-blue-50 text-blue-600 border border-blue-100 {% endif %}">
+                                <i class="fas {% if message.tags == 'error' %}fa-circle-exclamation{% elif message.tags == 'success' %}fa-circle-check{% else %}fa-info-circle{% endif %} mt-0.5"></i>
+                                <span>{{ message }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="{% url 'yourlife_social:register' %}" class="space-y-5">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div class="relative space-y-1">
+                        <label for="{{ field.id_for_label }}" class="block ml-1 text-xs font-bold tracking-wider uppercase text-slate-500">
+                            {{ field.label }}
+                        </label>
+                        
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 z-10 flex items-center pl-4 pointer-events-none text-slate-400">
+                                {% if 'email' in field.name %}
+                                    <i class="far fa-envelope"></i>
+                                {% elif 'password' in field.name %}
+                                    <i class="fas fa-lock"></i>
+                                {% elif 'user' in field.name or 'nome' in field.name %}
+                                    <i class="far fa-user"></i>
+                                {% else %}
+                                    <i class="far fa-edit"></i>
+                                {% endif %}
+                            </div>
+                            
+                            {{ field }}
+                        </div>
+
+                        {% if field.errors %}
+                            <p class="flex items-center gap-1 mt-1 ml-1 text-xs text-red-500">
+                                <i class="fas fa-circle-exclamation"></i> {{ field.errors.0 }}
+                            </p>
+                        {% endif %}
+                        
+                        {% if field.help_text and not field.errors %}
+                            <p class="text-[10px] text-slate-400 ml-1">{{ field.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="flex items-start gap-3 mt-4">
+                        <div class="flex items-center h-5">
+                            <input id="terms" type="checkbox" required class="w-4 h-4 border rounded border-slate-300 bg-gray-50 focus:ring-3 focus:ring-nio-300 text-nio-600">
+                        </div>
+                        <label for="terms" class="text-xs font-medium text-slate-500">
+                            Concordo com os <a href="{% url 'stage_publico:terms_of_use' %}" class="text-nio-600 hover:underline">Termos de Uso</a> e a <a href="{% url 'stage_publico:privacy_policy' %}" class="text-nio-600 hover:underline">Política de Privacidade</a>.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full text-white bg-nio-600 hover:bg-nio-700 focus:ring-4 focus:outline-none focus:ring-nio-300 font-bold rounded-xl text-sm px-5 py-4 text-center transition-all duration-200 shadow-lg shadow-nio-500/30 hover:shadow-nio-500/40 hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                        <span>Criar Minha Conta</span>
+                        <i class="fas fa-rocket"></i>
+                    </button>
+
+                </form>
+
+                <div class="relative mt-8 mb-6">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-slate-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-4 text-xs uppercase bg-white/50 backdrop-blur text-slate-400">Ou registre-se com</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" class="w-full bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 font-medium rounded-xl text-sm px-5 py-2.5 text-center transition flex items-center justify-center gap-2 shadow-sm">
+                        <i class="text-red-500 fab fa-google"></i> Google
+                    </button>
+                    <button type="button" class="w-full bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 font-medium rounded-xl text-sm px-5 py-2.5 text-center transition flex items-center justify-center gap-2 shadow-sm">
+                        <i class="text-blue-500 fab fa-microsoft"></i> Microsoft
+                    </button>
+                </div>
+
+            </div>
+            
+            <p class="mt-8 text-xs text-center text-slate-400">
+                Ao criar uma conta, você ganha acesso gratuito ao plano Starter.
+            </p>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("

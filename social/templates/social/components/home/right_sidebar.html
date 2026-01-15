@@ -1,0 +1,37 @@
+
+<div class="p-5 mb-6 border shadow-sm bg-white/80 backdrop-blur-md rounded-3xl border-white/50">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-bold text-slate-700">Sugestões para você</h3>
+        <a href="#" class="text-xs font-bold text-violet-600 hover:underline">Ver tudo</a>
+    </div>
+    
+    <div class="space-y-4">
+        {% for i in "123" %}
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://i.pravatar.cc/150?u=sug{{ forloop.counter }}" class="object-cover w-10 h-10 rounded-xl">
+                <div>
+                    <h4 class="text-xs font-bold text-slate-800">Novo Usuário</h4>
+                    <p class="text-[10px] text-slate-400">Segue você</p>
+                </div>
+            </div>
+            <button class="flex items-center justify-center w-8 h-8 transition-colors rounded-full bg-violet-50 text-violet-600 hover:bg-violet-600 hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="relative p-5 overflow-hidden text-white rounded-3xl">
+    <div class="absolute inset-0 bg-gradient-to-br from-violet-600 to-indigo-600"></div>
+    <div class="absolute top-0 right-0 w-24 h-24 -mt-4 -mr-4 bg-white rounded-full opacity-10 blur-xl"></div>
+    
+    <div class="relative z-10">
+        <h3 class="mb-1 text-lg font-bold">YourLife+ Premium</h3>
+        <p class="mb-4 text-xs leading-relaxed text-violet-100">Desbloqueie recursos exclusivos e remova anúncios.</p>
+        <button class="w-full py-2 text-xs font-bold transition-transform bg-white shadow-lg text-violet-700 rounded-xl hover:scale-105">
+            Saiba Mais
+        </button>
+    </div>
+</div>

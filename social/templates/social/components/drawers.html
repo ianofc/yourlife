@@ -1,0 +1,128 @@
+{% load static %}
+<div x-show="notifOpen" x-transition.slide.right @click.away="notifOpen = false" 
+     class="fixed inset-y-0 right-0 w-full md:w-[400px] z-[70] glass-drawer shadow-2xl flex flex-col" x-cloak>
+    <div class="flex items-center justify-between p-5 border-b border-slate-100 bg-white/50 backdrop-blur-sm">
+        <h3 class="text-lg font-bold text-slate-800">Notificações</h3>
+        <button @click="notifOpen = false" class="text-slate-400 hover:text-rose-500"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="flex-1 p-2 space-y-1 overflow-y-auto">
+        <template x-for="n in notifications" :key="n.id">
+            <a :href="n.url" class="flex gap-4 p-3 mb-1 transition rounded-xl hover:bg-white/60" :class="!n.is_read ? 'bg-violet-50/50' : ''">
+                <img :src="n.actor_avatar" class="object-cover w-10 h-10 rounded-full">
+                <div>
+                    <p class="text-sm text-slate-700"><span class="font-bold" x-text="n.actor_name"></span> <span x-text="n.verb"></span></p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mt-1" x-text="n.time_ago"></p>
+                </div>
+            </a>
+        </template>
+        <div x-show="notifications.length === 0" class="flex flex-col items-center justify-center h-64 text-slate-400">
+            <i class="mb-2 text-3xl opacity-50 far fa-bell-slash"></i>
+            <p class="text-sm">Nada por aqui.</p>
+        </div>
+    </div>
+</div>
+
+<div x-show="talkioOpen" x-transition.slide.right @click.away="talkioOpen = false" 
+     class="fixed inset-y-0 right-0 w-full md:w-[450px] z-[70] glass-drawer shadow-2xl flex flex-col" x-cloak>
+     <div class="relative w-full h-full bg-white">
+        <button @click="talkioOpen = false" class="absolute z-50 top-4 right-4 text-slate-400 hover:text-rose-500"><i class="fas fa-times"></i></button>
+        <iframe src="{% url 'yourlife_social:talkio_app' %}" class="w-full h-full border-0"></iframe>
+     </div>
+</div>
+
+<div x-show="themeOpen" x-transition.slide.right @click.away="themeOpen = false" 
+     class="fixed inset-y-0 right-0 w-full md:w-[350px] z-[70] glass-drawer shadow-2xl flex flex-col p-6 overflow-y-auto" x-cloak>
+    <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold font-display text-slate-800">Aparência</h3>
+        <button @click="themeOpen = false" class="text-slate-400 hover:text-rose-500"><i class="fas fa-times"></i></button>
+    </div>
+    
+    <div class="space-y-4">
+        <p class="text-xs font-bold tracking-wider uppercase opacity-50">Escolha seu estilo</p>
+        
+        <button @click="setTheme('theme-aurora')" class="flex items-center w-full gap-3 p-4 transition bg-white border-2 shadow-sm rounded-xl border-slate-200 hover:border-violet-500 group">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-violet-200 to-cyan-200"></div>
+            <div class="text-left">
+                <span class="block text-sm font-bold text-slate-800">Aurora Clean</span>
+                <span class="text-[10px] text-slate-500">Claro e moderno</span>
+            </div>
+            <i class="ml-auto opacity-0 fas fa-check text-violet-600 group-hover:opacity-100"></i>
+        </button>
+
+        {% if user.gender == 'M' or user.gender == 'Male' %}
+        <button @click="setTheme('theme-male-dark')" class="flex items-center w-full gap-3 p-4 transition border-2 shadow-sm rounded-xl border-slate-700 hover:border-blue-500 bg-slate-900">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-slate-800"></div>
+            <div class="text-left">
+                <span class="block text-sm font-bold text-white">Midnight Blue</span>
+                <span class="text-[10px] text-slate-400">Escuro e sóbrio</span>
+            </div>
+        </button>
+        {% endif %}
+
+        {% if user.gender == 'F' or user.gender == 'Female' %}
+        <button @click="setTheme('theme-female-dark')" class="flex items-center w-full gap-3 p-4 transition border-2 shadow-sm rounded-xl border-zinc-700 hover:border-pink-500 bg-zinc-900">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-600 to-zinc-800"></div>
+            <div class="text-left">
+                <span class="block text-sm font-bold text-white">Cyber Pink</span>
+                <span class="text-[10px] text-slate-400">Neon vibrante</span>
+            </div>
+        </button>
+        {% endif %}
+
+        {% if user.is_premium %}
+             <button @click="setTheme('theme-male-premium')" class="relative flex items-center w-full gap-3 p-4 overflow-hidden transition border-2 border-yellow-500 shadow-md rounded-xl bg-emerald-950">
+                <div class="absolute inset-0 bg-gradient-to-r from-yellow-400/10 to-transparent"></div>
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-yellow-400"></div>
+                <div class="relative z-10 text-left">
+                    <span class="block text-sm font-bold text-yellow-400">Royal Emerald</span>
+                    <span class="text-[10px] text-emerald-200">Premium</span>
+                </div>
+                <i class="ml-auto text-yellow-500 fas fa-crown"></i>
+            </button>
+        {% endif %}
+    </div>
+</div>
+
+<div x-show="a11yOpen" x-transition.slide.right @click.away="a11yOpen = false" 
+     class="fixed inset-y-0 right-0 w-full md:w-[350px] z-[70] glass-drawer shadow-2xl flex flex-col p-6" x-cloak>
+    <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold font-display text-slate-800">Acessibilidade</h3>
+        <button @click="a11yOpen = false" class="text-slate-400 hover:text-rose-500"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="space-y-6">
+        <div>
+            <p class="mb-3 text-xs font-bold tracking-wider uppercase opacity-50">Visual</p>
+            <div class="space-y-3">
+                <button @click="toggleAccess('access-high-contrast')" class="flex items-center justify-between w-full p-3 transition bg-white border shadow-sm rounded-xl border-slate-200 hover:border-violet-500 group">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-8 h-8 text-xs font-bold text-yellow-400 bg-black rounded-lg"><i class="fas fa-adjust"></i></div>
+                        <span class="text-sm font-bold text-slate-700">Alto Contraste</span>
+                    </div>
+                    <div class="w-4 h-4 border-2 rounded-full border-slate-300" :class="accessModes.includes('access-high-contrast') ? 'bg-violet-600 border-violet-600' : ''"></div>
+                </button>
+                
+                <button @click="toggleAccess('access-large-text')" class="flex items-center justify-between w-full p-3 transition bg-white border shadow-sm rounded-xl border-slate-200 hover:border-violet-500">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-8 h-8 text-lg font-bold rounded-lg bg-slate-100 text-slate-600">Aa</div>
+                        <span class="text-sm font-bold text-slate-700">Texto Maior</span>
+                    </div>
+                    <div class="w-4 h-4 border-2 rounded-full border-slate-300" :class="accessModes.includes('access-large-text') ? 'bg-violet-600 border-violet-600' : ''"></div>
+                </button>
+            </div>
+        </div>
+
+        <div>
+            <p class="mb-3 text-xs font-bold tracking-wider uppercase opacity-50">Cognitivo</p>
+            <div class="space-y-3">
+                <button @click="toggleAccess('access-dyslexic')" class="flex items-center justify-between w-full p-3 transition bg-white border shadow-sm rounded-xl border-slate-200 hover:border-violet-500">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 text-slate-600"><i class="fas fa-font"></i></div>
+                        <span class="text-sm font-bold text-slate-700">Fonte Dislexia</span>
+                    </div>
+                    <div class="w-4 h-4 border-2 rounded-full border-slate-300" :class="accessModes.includes('access-dyslexic') ? 'bg-violet-600 border-violet-600' : ''"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

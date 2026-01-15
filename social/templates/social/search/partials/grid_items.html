@@ -1,0 +1,38 @@
+{% for item in grid_items %}
+<div class="group relative rounded-[2rem] overflow-hidden bg-zinc-900 border border-white/5 cursor-pointer shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-fuchsia-900/20
+            {% if item.is_tall %}item-reel{% else %}item-square{% endif %}"
+     @click="openModal({
+        image: '{{ item.media_url }}',
+        type: '{% if item.is_video %}reel{% else %}photo{% endif %}',
+        caption: '{{ item.caption|default:''|escapejs }}',
+        likes: '{{ item.likes_count }}',
+        comments: '{{ item.comments_count }}',
+        user: '{{ item.user_name|default:'Usuário'|escapejs }}',
+        avatar: '{{ item.user_avatar|default:'https://ui-avatars.com/api/?name=User' }}'
+     })">
+    
+    {% if item.is_video %}
+        <video src="{{ item.media_url }}" class="object-cover w-full h-full" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+        <div class="absolute top-4 right-4 z-20 glass-badge px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1 text-white">
+            <i class="fas fa-video"></i>
+        </div>
+    {% else %}
+        <img src="{{ item.media_url }}" class="object-cover w-full h-full transition duration-700 group-hover:scale-110" loading="lazy">
+    {% endif %}
+
+    <div class="absolute inset-0 flex flex-col justify-end p-6 transition-opacity duration-300 opacity-0 overlay-grad group-hover:opacity-100">
+        <div class="transition-transform duration-300 transform translate-y-4 group-hover:translate-y-0">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1.5">
+                    <i class="text-base fas fa-heart text-fuchsia-500"></i>
+                    <span class="text-sm font-bold text-white">{{ item.likes_count }}</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <i class="text-base fas fa-comment text-white/80"></i>
+                    <span class="text-sm font-bold text-white">{{ item.comments_count }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

@@ -1,0 +1,120 @@
+{% extends 'social/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-5xl p-4 pt-10 mx-auto md:p-6" x-data="{ commentOpen: null }">
+    
+    <div class="relative mb-6 overflow-hidden glass-panel rounded-3xl group">
+        <div class="relative h-48 md:h-64 bg-slate-200">
+            {% if profile_context.cover_url %}
+                <img src="{{ profile_context.cover_url }}" class="object-cover w-full h-full">
+            {% else %}
+                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-violet-500 to-fuchsia-500"></div>
+            {% endif %}
+        </div>
+        
+        <div class="relative px-6 pb-6">
+            <div class="absolute -top-16 left-6 md:left-10">
+                <div class="relative w-32 h-32 p-1 bg-white rounded-full shadow-2xl">
+                    {% if profile_context.avatar_url %}
+                        <img src="{{ profile_context.avatar_url }}" class="object-cover w-full h-full border-4 rounded-full border-slate-50">
+                    {% else %}
+                        <img src="https://ui-avatars.com/api/?name={{ profile_user.first_name }}&background=random" class="object-cover w-full h-full border-4 rounded-full border-slate-50">
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex flex-col items-start justify-between gap-4 pt-20 md:pt-4 md:pl-48 md:flex-row md:items-center">
+                <div>
+                    <h2 class="text-2xl font-bold font-display text-slate-800">{{ profile_user.get_full_name }}</h2>
+                    <p class="text-sm text-slate-500">
+                        {% if profile_user.role == 'PROFESSOR' %}Professor{% else %}Estudante{% endif %}
+                        {% if is_university %} • Universitário{% endif %}
+                    </p>
+                </div>
+                
+                {% if not is_own_profile %}
+                <div class="flex gap-3">
+                    <button class="px-6 py-2 text-sm font-bold text-white shadow-lg bg-violet-600 rounded-xl hover:bg-violet-700">Seguir</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        
+        <div class="space-y-6">
+            <div class="p-6 glass-panel rounded-2xl">
+                <h3 class="mb-3 font-bold text-slate-800">Sobre</h3>
+                <p class="text-sm text-slate-600">{{ profile_user.bio|default:"Sem biografia." }}</p>
+                <div class="mt-4 space-y-2 text-sm text-slate-500">
+                    {% if profile_user.data_nascimento %}
+                        <div class="flex items-center gap-2"><i class="w-5 fas fa-birthday-cake"></i> {{ profile_user.data_nascimento|date:"d/m/Y" }}</div>
+                    {% endif %}
+                    <div class="flex items-center gap-2"><i class="w-5 fas fa-user-tag"></i> {{ profile_user.get_role_display }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-6 lg:col-span-2">
+            
+            {% for post in posts %}
+            <div class="p-5 transition glass-panel rounded-2xl hover:shadow-md">
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="{% if profile_context.avatar_url %}{{ profile_context.avatar_url }}{% else %}https://ui-avatars.com/api/?name={{ profile_user.first_name }}{% endif %}" class="object-cover w-10 h-10 rounded-full">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-800">{{ profile_user.get_full_name }}</h4>
+                        <p class="text-xs text-slate-500">{{ post.data_criacao|timesince }} atrás</p>
+                    </div>
+                </div>
+                
+                <div class="mb-4 text-sm leading-relaxed text-slate-600">{{ post.conteudo }}</div>
+                {% if post.imagem %}
+                    <img src="{{ post.imagem.url }}" class="w-full rounded-xl mb-4 max-h-[500px] object-cover">
+                {% endif %}
+
+                <div class="flex flex-col gap-3 pt-2 border-t border-slate-100">
+                    <div class="flex items-center justify-between">
+                        <div class="flex gap-6">
+                            <a href="{% url 'yourlife_social:toggle_like' post.id %}" class="flex items-center gap-2 text-sm font-bold transition group hover:scale-105 {% if user in post.curtidas.all %}text-rose-500{% else %}text-slate-500 hover:text-rose-500{% endif %}">
+                                <i class="{% if user in post.curtidas.all %}fas{% else %}far{% endif %} fa-heart text-lg"></i>
+                                <span>{{ post.curtidas.count }}</span>
+                            </a>
+                            
+                            <button @click="commentOpen = commentOpen === {{ post.id }} ? null : {{ post.id }}" class="flex items-center gap-2 text-sm font-bold transition text-slate-500 hover:text-blue-500 group hover:scale-105">
+                                <i class="text-lg far fa-comment"></i>
+                                <span>{{ post.comentarios.count }}</span>
+                            </button>
+                        </div>
+                        
+                        <a href="{% url 'yourlife_social:share_post' post.id %}" class="transition text-slate-400 hover:text-violet-500">
+                            <i class="text-lg fas fa-share"></i>
+                        </a>
+                    </div>
+
+                    <div x-show="commentOpen === {{ post.id }}" x-transition class="pt-2 space-y-3">
+                        {% for comentario in post.comentarios.all|slice:":3" %}
+                        <div class="flex gap-2 text-xs">
+                            <span class="font-bold text-slate-700">{{ comentario.autor.first_name }}:</span>
+                            <span class="text-slate-600">{{ comentario.texto }}</span>
+                        </div>
+                        {% endfor %}
+
+                        <form action="{% url 'yourlife_social:add_comment' post.id %}" method="POST" class="flex gap-2">
+                            {% csrf_token %}
+                            <input type="text" name="comentario" required placeholder="Escreva um comentário..." class="flex-1 px-4 py-2 text-xs border-none rounded-full bg-slate-50 focus:ring-1 focus:ring-violet-300">
+                            <button type="submit" class="px-2 text-xs font-bold rounded-lg text-violet-600 hover:bg-violet-50">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="py-10 text-center glass-panel rounded-2xl">
+                <p class="text-sm text-slate-400">Nenhuma publicação ainda.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+
+    <nav class="space-y-6">
+        <div>
+            <h3 class="px-4 mb-2 text-[10px] font-black uppercase text-slate-400 tracking-widest">Principal</h3>
+            <div class="glass-panel rounded-[2rem] p-2 space-y-1 border border-white/10">
+                <a href="{% url 'yourlife_social:home' %}" class="flex items-center gap-3 px-4 py-3 transition rounded-xl hover:bg-violet-500/10 text-slate-600 hover:text-violet-600">
+                    <i class="fas fa-house"></i> <span class="text-xs font-bold">Feed</span>
+                </a>
+                {% if 'PROFESSOR' in user.role %}
+                    <a href="{% url 'yourlife_social:groups_list' %}" class="flex items-center gap-3 px-4 py-3 transition rounded-xl hover:bg-black/5 text-slate-600"><i class="fas fa-users"></i> <span class="text-xs font-bold">Grupos</span></a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div>
+            <h3 class="px-4 mb-2 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                {% if 'PROFESSOR' in user.role %}Ferramentas{% else %}Acadêmico{% endif %}
+            </h3>
+            <div class="glass-panel rounded-[2rem] p-2 space-y-1 border border-white/10">
+                {% if 'PROFESSOR' in user.role %}
+                    <a href="/core/app/professor/" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600"><i class="fas fa-brain"></i> <span class="text-xs font-bold">Lumenio</span></a>
+                    <a href="{% url 'pedagogico:listar_turmas' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600"><i class="fas fa-chalkboard-user"></i> <span class="text-xs font-bold">Turmas</span></a>
+                {% elif 'ALUNO' in user.role %}
+                    {% if user.nivel_ensino == 'bebe' or user.fase_vida == 'BEBE' %}
+                        <a href="{% url 'core:daily_diary' %}" class="flex items-center gap-3 px-4 py-3 text-pink-600 rounded-xl bg-pink-50"><i class="fas fa-baby"></i> <span class="text-xs font-bold">Diário Infantil</span></a>
+                    {% else %}
+                        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600"><i class="fas fa-graduation-cap"></i> <span class="text-xs font-bold">Lumenios</span></a>
+                        <a href="{% url 'core:student_subjects' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600"><i class="fas fa-book"></i> <span class="text-xs font-bold">Disciplinas</span></a>
+                        <a href="{% url 'core:student_grades' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600"><i class="fas fa-file-invoice"></i> <span class="text-xs font-bold">Boletim e Notas</span></a>
+                        
+                        {% if user.nivel_ensino == 'superior' or user.fase_vida == 'JOVEM' or user.fase_vida == 'ADULTO' %}
+                            <a href="{% url 'core:thesis_manager' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600"><i class="fas fa-user-graduate"></i> <span class="text-xs font-bold">Orientação TCC</span></a>
+                            <a href="{% url 'core:career_center' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600"><i class="fas fa-briefcase"></i> <span class="text-xs font-bold">Vagas e Estágios</span></a>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                <a href="{% url 'core:student_services' %}" class="flex items-center gap-3 px-4 py-3 border-t rounded-xl text-slate-600 border-slate-100"><i class="fas fa-file-signature"></i> <span class="text-xs font-bold">Requerimentos</span></a>
+            </div>
+        </div>
+    </nav>
+    

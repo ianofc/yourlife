@@ -1,0 +1,32 @@
+{% extends 'social/layout/base.html' %}
+{% block content %}
+<div class="max-w-2xl p-8 mx-auto mt-4 bg-white rounded-lg shadow">
+    <h1 class="mb-2 text-2xl font-bold">Criar Grupo</h1>
+    <p class="mb-6 text-sm text-gray-500">Crie um espaço para sua turma, clube ou projeto.</p>
+
+    <form method="POST" class="space-y-6">
+        {% csrf_token %}
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Nome do Grupo</label>
+            <input type="text" name="nome" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm bg-gray-50 focus:border-blue-500 focus:ring-blue-500" placeholder="Ex: Clube de Xadrez">
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Privacidade</label>
+            <select name="privacidade" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm bg-gray-50">
+                <option value="publico">Público (Qualquer um pode ver)</option>
+                <option value="privado">Privado (Apenas membros)</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Descrição</label>
+            <textarea name="descricao" rows="4" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm bg-gray-50" placeholder="Qual o objetivo deste grupo?"></textarea>
+        </div>
+
+        <div class="pt-4">
+            <button type="submit" class="w-full py-3 font-bold text-white transition bg-blue-600 rounded-lg hover:bg-blue-700">Criar Grupo</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

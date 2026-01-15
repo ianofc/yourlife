@@ -1,0 +1,82 @@
+{% extends 'social/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-8">
+    <div class="overflow-hidden bg-white border shadow-lg rounded-xl border-slate-200">
+        
+        <div class="sticky top-0 z-10 flex items-center justify-between px-4 py-4 bg-white border-b border-slate-100">
+            <h1 class="text-xl font-bold text-slate-800">Editar perfil</h1>
+            <a href="{% url 'yourlife_social:meu_perfil' %}" class="flex items-center justify-center w-8 h-8 transition rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200"><i class="fas fa-times"></i></a>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="p-4 space-y-6">
+            {% csrf_token %}
+
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold text-slate-800">Foto do perfil</h3>
+                <label class="px-3 py-1 font-medium transition rounded-lg cursor-pointer text-violet-600 hover:bg-slate-50">
+                    Editar
+                    <input type="file" name="avatar" class="hidden">
+                </label>
+            </div>
+            <div class="flex justify-center py-4">
+                <div class="relative w-32 h-32">
+                    <img src="{% if user.avatar %}{{ user.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ user.first_name }}{% endif %}" class="object-cover w-32 h-32 border-4 border-white rounded-full shadow-md">
+                </div>
+            </div>
+
+            <div class="h-px bg-slate-100"></div>
+
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold text-slate-800">Foto de capa</h3>
+                <label class="px-3 py-1 font-medium transition rounded-lg cursor-pointer text-violet-600 hover:bg-slate-50">
+                    Editar
+                    <input type="file" name="capa" class="hidden">
+                </label>
+            </div>
+            <div class="relative h-40 overflow-hidden border rounded-xl bg-slate-100 border-slate-200">
+                {% if user.capa %}
+                    <img src="{{ user.capa.url }}" class="object-cover w-full h-full">
+                {% else %}
+                    <div class="flex items-center justify-center w-full h-full bg-gradient-to-r from-violet-200 to-pink-200 text-slate-400">
+                        <span>Sem capa</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="h-px bg-slate-100"></div>
+
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-lg font-bold text-slate-800">Biografia</h3>
+            </div>
+            <div class="p-3 transition border bg-slate-50 rounded-xl border-slate-200 focus-within:ring-2 ring-violet-200">
+                <textarea name="bio" rows="3" class="w-full text-center bg-transparent border-none text-slate-600 placeholder-slate-400 focus:ring-0" placeholder="Descreva você...">{{ user.bio }}</textarea>
+            </div>
+
+            <div class="h-px bg-slate-100"></div>
+
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold text-slate-800">Detalhes</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block mb-1 text-xs font-bold text-slate-500">Nome</label>
+                        <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full px-3 py-2 text-sm border rounded-lg bg-slate-50 border-slate-200">
+                    </div>
+                    <div>
+                        <label class="block mb-1 text-xs font-bold text-slate-500">Sobrenome</label>
+                        <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full px-3 py-2 text-sm border rounded-lg bg-slate-50 border-slate-200">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="w-full py-3 font-bold text-white transition shadow-lg bg-violet-600 rounded-xl hover:bg-violet-700 shadow-violet-200">
+                    Salvar Alterações
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}

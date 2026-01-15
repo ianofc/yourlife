@@ -1,0 +1,28 @@
+{% extends 'social/layout/base.html' %}
+{% load static %}
+
+{% block title %}Feed - YourLife+{% endblock %}
+
+{% block content %}
+<div class="container min-h-screen px-4 mx-auto">
+    <div class="relative grid grid-cols-1 gap-6 pt-6 lg:grid-cols-12 lg:gap-8">
+        
+        <aside class="hidden lg:block lg:col-span-3 xl:col-span-3">
+            <div class="sticky space-y-6 top-24">
+                {% include 'social/components/home/left_sidebar.html' %}
+            </div>
+        </aside>
+
+        <main class="lg:col-span-9 xl:col-span-6">
+            {% include 'social/components/home/feed_main.html' %}
+        </main>
+
+        <aside class="hidden xl:block xl:col-span-3">
+            <div class="sticky space-y-6 top-24">
+                {% include 'social/components/home/right_sidebar.html' %}
+            </div>
+        </aside>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends 'social/layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container px-4 mx-auto mt-6 max-w-7xl" x-data="{ activeTab: 'help', logTab: 'posts', showReportModal: false }">
+    
+    <div class="p-8 mb-8 text-center text-white shadow-2xl bg-gradient-to-br from-[var(--primary)] to-indigo-600 rounded-[2rem] relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-10">
+            <i class="fas fa-shield-alt text-[15rem] -rotate-12 absolute -bottom-10 -left-10"></i>
+        </div>
+        <h1 class="relative mb-2 text-4xl font-black tracking-tight font-display">Central de Suporte e Segurança</h1>
+        <p class="relative font-medium opacity-90">Gerencie sua privacidade, denuncie abusos e monitore sua atividade no NioCortex.</p>
+    </div>
+
+    <div class="flex flex-col gap-8 lg:flex-row">
+        
+        <div class="flex-shrink-0 w-full lg:w-80">
+            <div class="sticky p-3 space-y-1 top-24 glass-panel rounded-3xl border border-[var(--border-color)] bg-[var(--bg-card)]/50">
+                <p class="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] opacity-50">Menu de Suporte</p>
+                
+                <button @click="activeTab = 'help'" :class="activeTab === 'help' ? 'bg-[var(--primary)] text-white shadow-lg' : 'hover:bg-[var(--primary)]/10 text-[var(--text-muted)]'" class="flex items-center w-full gap-3 px-4 py-3.5 font-bold text-left transition-all rounded-2xl">
+                    <i class="w-5 text-center fas fa-life-ring"></i> Ajuda e Denúncias
+                </button>
+                
+                <button @click="activeTab = 'security'" :class="activeTab === 'security' ? 'bg-[var(--primary)] text-white shadow-lg' : 'hover:bg-[var(--primary)]/10 text-[var(--text-muted)]'" class="flex items-center w-full gap-3 px-4 py-3.5 font-bold text-left transition-all rounded-2xl">
+                    <i class="w-5 text-center fas fa-shield-alt"></i> Segurança e Privacidade
+                </button>
+                
+                <button @click="activeTab = 'policies'" :class="activeTab === 'policies' ? 'bg-[var(--primary)] text-white shadow-lg' : 'hover:bg-[var(--primary)]/10 text-[var(--text-muted)]'" class="flex items-center w-full gap-3 px-4 py-3.5 font-bold text-left transition-all rounded-2xl">
+                    <i class="w-5 text-center fas fa-book-reader"></i> Nossas Políticas
+                </button>
+                
+                <div class="h-px my-4 bg-[var(--border-color)] opacity-50"></div>
+                
+                <button @click="activeTab = 'activity'" :class="activeTab === 'activity' ? 'bg-[var(--primary)] text-white shadow-lg' : 'hover:bg-[var(--primary)]/10 text-[var(--text-muted)]'" class="flex items-center w-full gap-3 px-4 py-3.5 font-bold text-left transition-all rounded-2xl">
+                    <i class="w-5 text-center fas fa-history"></i> Registro de Atividades
+                </button>
+                
+                <button @click="activeTab = 'niostore'" :class="activeTab === 'niostore' ? 'bg-[var(--primary)] text-white shadow-lg' : 'hover:bg-[var(--primary)]/10 text-[var(--text-muted)]'" class="flex items-center w-full gap-3 px-4 py-3.5 font-bold text-left transition-all rounded-2xl">
+                    <i class="w-5 text-center fas fa-shopping-bag"></i> NioStore & Compras
+                </button>
+            </div>
+        </div>
+
+        <div class="flex-1 glass-panel p-6 md:p-10 rounded-[2.5rem] border border-[var(--border-color)] bg-[var(--bg-card)] shadow-xl min-h-[700px] backdrop-blur-sm">
+            
+            <div x-show="activeTab === 'help'" x-cloak class="space-y-8 animate-fade-in">
+                <div class="border-b border-[var(--border-color)] pb-6">
+                    <h2 class="text-3xl font-black text-[var(--text-main)]">Como podemos ajudar?</h2>
+                    <p class="text-[var(--text-muted)] mt-1">Selecione uma categoria para suporte direto.</p>
+                </div>
+                
+                <div class="grid gap-6 md:grid-cols-2">
+                    <a href="#" class="p-8 transition-all border-2 border-transparent bg-[var(--bg-body)]/50 rounded-[2rem] hover:border-red-500/50 group">
+                        <i class="mb-4 text-3xl text-red-500 transition-transform fas fa-flag group-hover:scale-110"></i>
+                        <h3 class="text-xl font-black text-[var(--text-main)]">Denunciar Usuário</h3>
+                        <p class="mt-2 text-sm text-[var(--text-muted)]">Relate assédio, spam ou perfis falsos diretamente à nossa moderação.</p>
+                    </a>
+                    <a href="#" class="p-8 transition-all border-2 border-transparent bg-[var(--bg-body)]/50 rounded-[2rem] hover:border-yellow-500/50 group">
+                        <i class="mb-4 text-3xl text-yellow-500 transition-transform fas fa-bug group-hover:scale-110"></i>
+                        <h3 class="text-xl font-black text-[var(--text-main)]">Relatar Problema Técnico</h3>
+                        <p class="mt-2 text-sm text-[var(--text-muted)]">Algo não carregou ou encontrou um erro? Envie um log para nós.</p>
+                    </a>
+                </div>
+
+                <div class="p-8 border-2 border-red-500/30 bg-red-500/5 rounded-[2rem] relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h3 class="flex items-center gap-2 mb-3 text-2xl font-black text-red-600">
+                            <i class="fas fa-hand-paper"></i> Prevenção ao Bullying
+                        </h3>
+                        <p class="mb-6 text-[var(--text-main)] leading-relaxed">
+                            O NioCortex tem **tolerância zero** com bullying. Se você está sofrendo ou presenciou algo, faça uma denúncia 100% anônima. Nossa IA **Conscios** atua ativamente para remover conteúdos nocivos antes mesmo de serem vistos.
+                        </p>
+                        <button class="px-8 py-4 text-sm font-black tracking-wider text-white uppercase transition-all bg-red-600 shadow-lg rounded-2xl hover:bg-red-700 shadow-red-600/20">
+                            Abrir Denúncia
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="activeTab === 'security'" x-cloak class="space-y-8 animate-fade-in">
+                <div class="border-b border-[var(--border-color)] pb-6">
+                    <h2 class="text-3xl font-black text-[var(--text-main)]">Privacidade e Segurança</h2>
+                    <p class="text-[var(--text-muted)] mt-1">Proteja sua conta e controle quem interage com você.</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-6 border rounded-[1.5rem] bg-[var(--bg-body)]/30 border-[var(--border-color)]">
+                        <div>
+                            <p class="font-black text-[var(--text-main)]">Login e Senha</p>
+                            <p class="text-xs text-[var(--text-muted)]">Última alteração: Há 3 meses.</p>
+                        </div>
+                        <button class="px-5 py-2 text-xs font-bold text-[var(--primary)] border-2 border-[var(--primary)]/20 rounded-xl hover:bg-[var(--primary)] hover:text-white transition-all">Alterar Senha</button>
+                    </div>
+
+                    <div class="flex items-center justify-between p-6 border rounded-[1.5rem] bg-[var(--bg-body)]/30 border-[var(--border-color)]">
+                        <div>
+                            <p class="font-black text-[var(--text-main)]">Autenticação de Dois Fatores (2FA)</p>
+                            <p class="text-xs text-[var(--text-muted)]">Adicione segurança extra via E-mail ou App.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-[var(--primary)] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between p-6 border rounded-[1.5rem] bg-[var(--bg-body)]/30 border-[var(--border-color)]">
+                        <div>
+                            <p class="font-black text-[var(--text-main)]">Bloqueio de Pessoas</p>
+                            <p class="text-xs text-[var(--text-muted)]">Gerencie sua lista de usuários restritos.</p>
+                        </div>
+                        <button class="text-sm font-black text-[var(--primary)] underline underline-offset-4">Gerenciar Lista</button>
+                    </div>
+
+                     <div class="flex items-center justify-between p-6 border rounded-[1.5rem] bg-[var(--bg-body)]/30 border-[var(--border-color)]">
+                        <div>
+                            <p class="font-black text-[var(--text-main)]">Status da Conta</p>
+                            <p class="mt-1 text-xs font-black tracking-tighter text-green-500 uppercase"><i class="mr-1 fas fa-check-circle"></i> Regular - Sem infrações</p>
+                        </div>
+                        <button class="text-xs font-bold text-[var(--text-muted)] hover:underline">Ver Detalhes do que há na sua conta</button>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="activeTab === 'policies'" x-cloak class="space-y-8 animate-fade-in">
+                <div class="border-b border-[var(--border-color)] pb-6">
+                    <h2 class="text-3xl font-black text-[var(--text-main)]">Nossas Políticas</h2>
+                    <p class="text-[var(--text-muted)] mt-1">Transparência total sobre regras e monitoramento.</p>
+                </div>
+                
+                <div class="prose prose-sm max-w-none text-[var(--text-main)] space-y-6">
+                    <div class="p-6 bg-[var(--bg-body)]/40 rounded-2xl border-l-4 border-[var(--primary)]">
+                        <h3 class="mb-2 text-xl font-black">Padrões da Comunidade</h3>
+                        <p class="text-sm text-[var(--text-muted)]">O NioCortex é um espaço de aprendizado. Proibimos discurso de ódio, violência gráfica, nudez, assédio e spam. Conteúdos que violem estas regras serão removidos imediatamente.</p>
+                    </div>
+
+                    <div class="p-6 bg-[var(--bg-body)]/40 rounded-2xl border-l-4 border-indigo-500">
+                        <h3 class="mb-2 text-xl font-black">Nosso Monitoramento (IA Conscios)</h3>
+                        <p class="text-sm text-[var(--text-muted)]">Utilizamos a IA **Conscios** para analisar chats públicos, comentários e posts em tempo real. Ela identifica padrões de comportamento nocivo e auxilia moderadores humanos na manutenção de um ambiente seguro.</p>
+                    </div>
+
+                    <div class="p-6 bg-[var(--bg-body)]/40 rounded-2xl border-l-4 border-emerald-500">
+                        <h3 class="mb-2 text-xl font-black">Compartilhamento Permitido</h3>
+                        <p class="text-sm text-[var(--text-muted)]">Você pode compartilhar livremente materiais de estudo, vivências acadêmicas e artes. Certifique-se sempre de possuir os direitos autorais do que publica.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="activeTab === 'activity'" x-cloak class="space-y-8 animate-fade-in">
+                <div class="flex items-center justify-between pb-6 border-b border-[var(--border-color)]">
+                    <div>
+                        <h2 class="text-3xl font-black text-[var(--text-main)]">Registro de Atividades</h2>
+                        <p class="text-[var(--text-muted)] mt-1">Tudo o que você fez no NioCortex.</p>
+                    </div>
+                    <button class="px-4 py-2 text-xs font-black tracking-tighter text-red-500 uppercase transition-all border border-red-500/20 rounded-xl hover:bg-red-500 hover:text-white">Limpar Histórico</button>
+                </div>
+
+                <div class="overflow-hidden border rounded-3xl border-[var(--border-color)] bg-[var(--bg-body)]/20">
+                    <div class="flex gap-2 p-3 overflow-x-auto border-b bg-[var(--primary)]/5 border-[var(--border-color)] scrollbar-hide">
+                        <template x-for="tab in ['posts', 'stories', 'comments', 'likes', 'search', 'videos', 'lives', 'groups']">
+                            <button @click="logTab = tab" :class="logTab === tab ? 'bg-white shadow-md text-[var(--primary)]' : 'text-[var(--text-muted)]'" class="px-5 py-2.5 text-xs font-black transition-all rounded-xl whitespace-nowrap uppercase tracking-widest" x-text="tab === 'posts' ? 'Publicações' : tab === 'stories' ? 'Stories' : tab === 'comments' ? 'Comentários' : tab === 'likes' ? 'Curtidas' : tab === 'search' ? 'Pesquisas' : tab === 'videos' ? 'Vídeos Assistidos' : tab === 'lives' ? 'Lives' : 'Grupos'"></button>
+                        </template>
+                    </div>
+
+                    <div class="p-6 h-[450px] overflow-y-auto space-y-4">
+                        
+                        <div x-show="logTab === 'posts'" class="space-y-3">
+                            <div class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-[var(--border-color)] shadow-sm">
+                                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-[var(--primary)]"><i class="text-xl fas fa-image"></i></div>
+                                <div><p class="text-sm font-black text-[var(--text-main)]">Você publicou uma foto</p><p class="text-[10px] text-[var(--text-muted)] uppercase font-bold">Há 2 horas • Público</p></div>
+                            </div>
+                        </div>
+
+                        <div x-show="logTab === 'lives'" class="space-y-3">
+                            <div class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-[var(--border-color)] shadow-sm">
+                                <div class="flex items-center justify-center w-12 h-12 text-red-500 bg-red-100 rounded-lg"><i class="text-xl fas fa-broadcast-tower"></i></div>
+                                <div><p class="text-sm font-black text-[var(--text-main)]">Você realizou uma Live: 'Revisão Enem'</p><p class="text-[10px] text-[var(--text-muted)] uppercase font-bold">10 de Jan • 45 espectadores</p></div>
+                            </div>
+                        </div>
+
+                        <div x-show="logTab === 'videos'" class="space-y-3">
+                            <div class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-[var(--border-color)] shadow-sm">
+                                <div class="flex items-center justify-center w-12 h-12 text-blue-500 bg-blue-100 rounded-lg"><i class="text-xl fas fa-play-circle"></i></div>
+                                <div><p class="text-sm font-black text-[var(--text-main)]">Vídeo Assistido: 'Cálculo I - Derivadas'</p><p class="text-[10px] text-[var(--text-muted)] uppercase font-bold">Ontem às 19:30</p></div>
+                            </div>
+                        </div>
+
+                        <div x-show="logTab === 'search'" class="space-y-3">
+                            <div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-[var(--border-color)] shadow-sm">
+                                <div class="flex items-center gap-4"><i class="fas fa-search text-[var(--text-muted)]"></i> <span class="text-sm font-bold">"Grupo de Estudos Psicologia"</span></div>
+                                <button class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div x-show="logTab === 'comments'" class="space-y-3">
+                            <div class="p-4 bg-white rounded-2xl border border-[var(--border-color)] shadow-sm">
+                                <p class="text-xs text-[var(--text-muted)] mb-2 font-bold uppercase tracking-tighter">Em resposta a Ian OFC:</p>
+                                <p class="text-sm italic">"Parabéns pelo projeto, ficou sensacional!"</p>
+                                <p class="text-[10px] text-[var(--text-muted)] mt-2">Há 3 dias</p>
+                            </div>
+                        </div>
+
+                        <div x-show="['stories', 'likes', 'groups'].includes(logTab)" class="py-20 text-center text-[var(--text-muted)]">
+                            <i class="mb-4 text-5xl fas fa-folder-open opacity-10"></i>
+                            <p class="text-sm font-black tracking-widest uppercase">Nenhum registro recente encontrado.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div x-show="activeTab === 'niostore'" x-cloak class="py-20 space-y-8 text-center animate-fade-in">
+                <i class="fas fa-shopping-cart text-7xl text-[var(--primary)] mb-6 opacity-20"></i>
+                <h2 class="text-3xl font-black text-[var(--text-main)]">NioStore & Compras</h2>
+                <p class="max-w-md mx-auto text-[var(--text-muted)]">Acompanhe seus pedidos de materiais físicos, brindes e upgrades premium da sua conta.</p>
+                <button class="mt-8 px-8 py-4 bg-[var(--primary)] text-white font-black rounded-2xl shadow-xl shadow-primary/30 uppercase tracking-widest text-xs">Acessar Loja</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

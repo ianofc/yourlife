@@ -1,0 +1,26 @@
+
+<div class="items-center justify-center flex-1 hidden gap-6 md:flex">
+    <a href="{% url 'yourlife_social:home' %}" class="p-2 group" title="Feed"><i class="text-2xl transition fas fa-home text-violet-600"></i></a>
+    <a href="{% url 'yourlife_social:reels' %}" class="p-2 group" title="Reels"><i class="text-2xl transition fas fa-film text-slate-400 group-hover:text-violet-600"></i></a>
+    <a href="{% url 'yourlife_social:explore' %}" class="p-2 group" title="Explorar"><i class="text-2xl transition far fa-compass text-slate-400 group-hover:text-violet-600"></i></a>
+    
+    <div class="w-px h-8 mx-2 bg-slate-300/50"></div>
+    
+    
+    {% if 'PROFESSOR' in user.role %}
+        <a href="{% url 'pedagogico:listar_turmas' %}" class="p-2 group" title="Minhas Turmas"><i class="text-2xl transition fas fa-chalkboard-user text-slate-400 group-hover:text-violet-600"></i></a>
+        <a href="{% url 'lumenios:dashboard_professor' %}" class="p-2 group" title="Portal Docente"><i class="text-2xl transition fas fa-graduation-cap text-slate-400 group-hover:text-violet-600"></i></a>
+    {% elif 'SECRETARIA' in user.role %}
+        <a href="{% url 'hub_secretaria:dashboard' %}" class="p-2 group" title="Voltar ao Hub"><i class="text-2xl transition fas fa-building text-slate-400 group-hover:text-violet-600"></i></a>
+    {% elif 'RH' in user.role %}
+        <a href="{% url 'humanex_rh:dashboard' %}" class="p-2 group" title="Voltar ao RH"><i class="text-2xl transition fas fa-id-card text-slate-400 group-hover:text-violet-600"></i></a>
+    {% elif 'CRM' in user.role %}
+        <a href="{% url 'vionex_crm:dashboard' %}" class="p-2 group" title="Voltar ao CRM"><i class="text-2xl transition fas fa-handshake text-slate-400 group-hover:text-violet-600"></i></a>
+    {% else %}
+        {% if user.nivel_ensino != 'bebe' %}
+        <a href="{% url 'core:student_library' %}" class="p-2 group" title="Biblioteca"><i class="text-2xl transition fas fa-book-open text-slate-400 group-hover:text-violet-600"></i></a>
+        <a href="/lumenios/aluno/dashboard/" class="p-2 group" title="Ambiente de Estudos"><i class="text-2xl transition fas fa-graduation-cap text-slate-400 group-hover:text-violet-600"></i></a>
+        {% endif %}
+    {% endif %}
+    
+</div>
