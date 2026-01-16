@@ -1,0 +1,6 @@
+django>=4.2
+requests
+openai
+pillow
+django-environ
+python-dotenv

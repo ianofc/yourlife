@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from core.forms import CustomAuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm as CustomAuthenticationForm
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from ..services.conscios_register import chat_com_conscios

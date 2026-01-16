@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.views import View
-from core.forms import CustomUserCreationForm
+from django.contrib.auth.forms import UserCreationForm as CustomUserCreationForm
 from ..models import Profile
 
 class GlobalRegisterView(View):
